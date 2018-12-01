@@ -10,10 +10,10 @@ public enum RoomStatus { OPERATIONAL, DESTROYED }
 public class Room : MonoBehaviour
 {
 
-    public int numberOfCrew;
-    public int resourcesNb;
-    public RoomType roomType;
-    public RoomStatus roomStatus;
+    public int numberOfCrew=0;
+    public int resourcesNb=0;
+    public RoomType roomType = RoomType.FOOD;
+    public RoomStatus roomStatus = RoomStatus.OPERATIONAL;
 
     
 
