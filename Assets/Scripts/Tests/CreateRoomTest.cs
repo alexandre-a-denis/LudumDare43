@@ -8,9 +8,10 @@ public class CreateRoomTest : MonoBehaviour
     public GameObject canvas;
 
 	void Start () {
-        Room wreckClone = (Room) Instantiate(roomPrefab, Vector3.zero, Quaternion.identity) as Room;
-        wreckClone.transform.SetParent(canvas.transform);
-        
+        Room wreckClone = (Room) Instantiate(roomPrefab) as Room;
+        wreckClone.transform.SetParent(canvas.transform, false);
+       
+       
 
     }
 	
