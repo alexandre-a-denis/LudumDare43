@@ -6,6 +6,45 @@ using UnityEngine;
 public class WorldState : MonoBehaviour
 {
 
+    public Room roomPrefab;
+    public GameObject canvas;
+    private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
+
+
+    void Start()
+    {
+        // Create all rooms
+
+        int roomId = 0;
+    
+        // Unique "rest" room...
+        rooms.Add(roomId++, NewRoom(totalCrew, 0, RoomType.REST));
+
+        // ... then some "food" rooms...
+        for (int i = 0; i < 3; i++) { rooms.Add(roomId++, NewRoom(0, 400, RoomType.FOOD)); }
+
+        // ... abd some "relic" rooms. 
+        for (int i = 0; i < 3; i++) { rooms.Add(roomId++, NewRoom(0, 10, RoomType.RELICS)); }
+
+        foreach (var room in rooms)
+        {
+            Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType);
+        }
+    }
+
+    private Room NewRoom(int numberOfCrew, int resourcesNb, RoomType type)
+    {
+        Room newRoom = (Room)Instantiate(roomPrefab) as Room;
+        newRoom.transform.SetParent(canvas.transform, false);
+
+        newRoom.roomStatus = RoomStatus.OPERATIONAL;
+        newRoom.numberOfCrew = numberOfCrew;
+        newRoom.resourcesNb = resourcesNb;
+        newRoom.roomType = type;
+
+        return newRoom;
+    }
+
     // Number of turns before game ends.
     public int turnCountLimit = 20;
 
@@ -63,48 +102,5 @@ public class WorldState : MonoBehaviour
             }
         }
     }
-
-    // =============== Room management =====================
-
-    private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
-
-    private void InitRooms()
-    {
-        int roomId = 0;
-        int nbFoodRooms = 3;
-        int nbHopeRooms = 3;
-
-        for (int i = 0; i < nbFoodRooms; i++)
-        {
-            rooms.Add(roomId++, new Room("food"));
-        }
-    }
-
-
-    public void AddCrewToRoom(string roomId, int nbCrewToAssign)
-    {
-        if (nbCrewToAssign > unassignedCrew)
-        {
-
-        }
-        else
-        {
-
-        }
-    }
-
-    public struct Room
-    {
-        public int crew;
-        public string type; // TODO have an enum?
-
-        public Room(string t)
-        {
-            crew = 0;
-            type = t;
-        }
-
-
-    }
-
+     
 }
