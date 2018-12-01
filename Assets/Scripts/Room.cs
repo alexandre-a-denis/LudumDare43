@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RoomType { FOOD, RELICS, REST }
+public enum RoomType { FOOD, RELICS, COMMON }
 
 public enum RoomStatus { OPERATIONAL, DESTROYED }
 
