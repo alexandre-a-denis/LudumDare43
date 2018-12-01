@@ -27,7 +27,7 @@ public class RoomTypePanel : RoomUIScript
             case RoomType.RELICS:
                 image.sprite = relicsSprite;
                 break;
-            case RoomType.REST:
+            case RoomType.COMMON:
                 image.sprite = restSprite;
                 break;
         }
@@ -37,7 +37,7 @@ public class RoomTypePanel : RoomUIScript
     void Update()
     {
         text.text = room.roomType.ToString();
-        if (room.roomType!=RoomType.REST)
+        if (room.roomType!=RoomType.COMMON)
             text.text += " " + room.resourcesNb;
     }
 }

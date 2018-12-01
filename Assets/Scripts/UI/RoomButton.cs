@@ -16,7 +16,7 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
         button = GetComponent<Button>();
         button.onClick.AddListener(TaskOnClick);
 
-        if (room.roomType == RoomType.REST)
+        if (room.roomType == RoomType.COMMON)
             gameObject.SetActive(false);
 
 
