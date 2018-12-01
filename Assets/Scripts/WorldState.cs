@@ -10,7 +10,7 @@ public class WorldState : MonoBehaviour
     int turnCountLimit = 20;
 
     // Current turn count.
-    public int TurnCount = 1;
+    public int turnCount = 1;
 
     // Defines the number of human in the ship.
     int crewSize;
@@ -21,12 +21,12 @@ public class WorldState : MonoBehaviour
     // Level of hope. Hope is not "consumed" like food is. It will affect capacity of crew during events.
     int hopeLevel;
 
-
+    // Increase turn count. Perform "end of turn"
     public void NextTurn()
     {
-        TurnCount += 1;
-        if (TurnCount < turnCountLimit)
-            Debug.Log("TurnCount increased to " + TurnCount);
+        turnCount += 1;
+        if (turnCount < turnCountLimit)
+            Debug.Log("TurnCount increased to " + turnCount);
         else
             Debug.Log("Reached max turn");
     }
