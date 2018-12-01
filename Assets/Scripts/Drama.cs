@@ -19,7 +19,7 @@ public class Drama
 		List<DramaType> dramaTypes = System.Enum.GetValues(typeof(DramaType)).Cast<DramaType>().ToList();
 		DramaType selectedDramaType = dramaTypes[Random.Range(0, dramaTypes.Count())];
 
-		List<Room> validRooms = rooms.Where(room => room.roomType != RoomType.REST).ToList();
+		List<Room> validRooms = rooms.Where(room => room.roomType != RoomType.COMMON).ToList();
 		Room selectedRoom = validRooms[Random.Range(0, validRooms.Count())];
 
 		return new Drama(selectedDramaType, selectedRoom);

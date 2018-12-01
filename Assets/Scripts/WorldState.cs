@@ -3,63 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// Container for "global" states
+public enum TurnPhases { DRAMA, MOVE }
+
 public class WorldState : MonoBehaviour
 {
 
     public Room roomPrefab;
     public GameObject canvas;
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
-    private Room restRoom;
+    private Room commonRoom;
 
-    // Number of turns before game ends.
-    public int turnCountLimit = 20;
-
-    // Current turn count.
-    public int turnCount = 1;
-
-    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
-    public bool end = false;
 
     void Start()
     {
         // Create all rooms
         int roomId = 0;
 
-        // Unique "rest" room...
-        restRoom = NewRoom(roomId++, "Rest Room", 50, 0, RoomType.REST);
-        this.rooms.Add(restRoom.id, restRoom);
+        // Unique "common" room...
+        commonRoom = CreateRoom(roomId++, "Common room", 50, 0, RoomType.COMMON);
+        this.rooms.Add(commonRoom.id, commonRoom);
 
         // ... then some "food" rooms...
         for (int i = 0; i < 3; i++)
         {
-            Room r = NewRoom(roomId++, string.Format("Cantina #{0}", i + 1), 0, 400, RoomType.FOOD);
+            Room r = CreateRoom(roomId++, string.Format("Cantina #{0}", i + 1), 0, 400, RoomType.FOOD);
             this.rooms.Add(r.id, r);
         }
 
         // ... add some "relic" rooms. 
         for (int i = 0; i < 3; i++)
         {
-            Room r = NewRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
+            Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
 
         foreach (var room in this.rooms)
         {
-            if (room.Value.roomType != RoomType.REST)
+            if (room.Value.roomType != RoomType.COMMON)
             {
-                int nbCrew = Random.Range(0, restRoom.numberOfCrew / 2);
+                int nbCrew = Random.Range(0, commonRoom.numberOfCrew / 2);
                 AddCrewToRoom(room.Value, nbCrew);
             }
-        }
-
-        foreach (var room in this.rooms)
-        {
             Debug.Log(room);
         }
     }
 
-    private Room NewRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
+    private Room CreateRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
     {
         Room newRoom = (Room)Instantiate(roomPrefab) as Room;
         newRoom.transform.SetParent(canvas.transform, false);
@@ -78,50 +67,50 @@ public class WorldState : MonoBehaviour
     // ====================== CREW ====================== 
 
     // Get current total number of crew members
-    public int totalCrew()
+    public int CurrentCrew()
     {
         return this.rooms.Values.Sum(r => r.numberOfCrew);
     }
 
-    // Moves crew between the rest room and the other rooms
+    // Moves crew between the common room and the other rooms
     public void AddCrewToRoom(Room r, int crewAmount)
     {
         if (crewAmount == 0)
         {
             Debug.Log("Trying to add 0 crew to a room, not allowed");
         }
-        else if (r.roomType == RoomType.REST)
+        else if (r.roomType == RoomType.COMMON)
         {
-            Debug.Log("Trying to add crew to the rest room, not allowed");
+            Debug.Log("Trying to add crew to the common room, not allowed");
         }
         else
         {
             if (crewAmount > 0)
             {
-                // Attempting to move from rest room to target room
-                if (crewAmount > restRoom.numberOfCrew)
+                // Attempting to move from common room to target room
+                if (crewAmount > commonRoom.numberOfCrew)
                 {
-                    Debug.Log("Cannot add " + crewAmount + " when rest room only contains " + restRoom.numberOfCrew);
+                    Debug.Log("Cannot add " + crewAmount + " when common room only contains " + commonRoom.numberOfCrew);
                 }
                 else
                 {
-                    restRoom.numberOfCrew -= crewAmount;
+                    commonRoom.numberOfCrew -= crewAmount;
                     r.numberOfCrew += crewAmount;
-                    Debug.Log("Added " + crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
+                    Debug.Log("Added " + crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and common room has " + commonRoom.numberOfCrew);
                 }
             }
             else
             {
-                // Attempting to move from target room to rest room
+                // Attempting to move from target room to common room
                 if (-crewAmount > r.numberOfCrew)
                 {
                     Debug.Log("Cannot remove " + -crewAmount + " when target room only contains " + r.numberOfCrew);
                 }
                 else
                 {
-                    restRoom.numberOfCrew -= crewAmount;
+                    commonRoom.numberOfCrew -= crewAmount;
                     r.numberOfCrew += crewAmount;
-                    Debug.Log("Removed " + -crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
+                    Debug.Log("Removed " + -crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and common room has " + commonRoom.numberOfCrew);
                 }
             }
         }
@@ -132,13 +121,13 @@ public class WorldState : MonoBehaviour
     // Food is stored into rooms. Loosing a food room removes all food it contained. Food is consumed from food rooms randomly.
 
     // Get current total amount of food
-    public int totalFood()
+    public int CurrentFood()
     {
         return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).Sum(r => r.resourcesNb);
     }
 
     // Consume food from rooms
-    private void consumeFood(int amount)
+    private void ConsumeFood(int amount)
     {
         List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList();
         int nbFoodRooms = foodRooms.Count();
@@ -148,48 +137,70 @@ public class WorldState : MonoBehaviour
         }
     }
 
-    private void logFoodRoom()
+    private void LogFoodRoom()
     {
         this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList().ForEach(r => Debug.Log(r.roomName + " " + r.resourcesNb));
     }
 
     // ====================== HOPE ====================== 
+    // Unlike Food, Hope is not a stock. Hope is calculated based on the number of Relics on the ship (5 hope point per relic)
 
-    // Level of hope. Hope is not "consumed" like food is. It will affect capacity of crew during events.
-    int hopeLevel;
+    public int CurrentHope()
+    {
+        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS).Sum(r => r.resourcesNb) * 5;
+    }
+
+    // ====================== TURNS ====================== 
+
+    // Number of turns before game ends.
+    private int TurnCountLimit = 20;
+
+    // Current turn count.
+    public int CurrentTurn = 1;
+
+    public TurnPhases CurrentPhase = TurnPhases.DRAMA;
 
 
-    // Increase turn count. Perform "end of turn"
+    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
+    public bool End = false;
+
+    public void AfterDrama()
+    {
+        CurrentPhase = TurnPhases.MOVE;
+    }
+
     public void NextTurn()
     {
+        CurrentPhase = TurnPhases.DRAMA;
+
         Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
         Debug.Log(newDrama);
 
         // Consume food (1 unit per crew)
-        consumeFood(totalCrew());
-        if (totalFood() < 0)
+        ConsumeFood(CurrentCrew());
+        if (CurrentFood() < 0)
         {
-            end = true;
+            End = true;
             Debug.Log("!! Negative food, you loose");
         }
-        logFoodRoom();
+        LogFoodRoom();
 
         // Check if some crew remains
-        if (totalCrew() <= 0)
+        if (CurrentCrew() <= 0)
         {
-            end = true;
+            End = true;
             Debug.Log("!! Negative crew (all people died), you loose");
         }
 
-        if (!end)
+        if (!End)
         {
             // Increase turn count & check for max number of turns
-            turnCount += 1;
-            if (turnCount < turnCountLimit)
-                Debug.Log("TurnCount increased to " + turnCount);
+            CurrentTurn += 1;
+            if (CurrentTurn < TurnCountLimit)
+                Debug.Log("TurnCount increased to " + CurrentTurn);
             else
             {
-                end = true;
+                End = true;
                 Debug.Log("!! Reached max turn, you win");
             }
         }
