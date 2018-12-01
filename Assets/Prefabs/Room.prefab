@@ -505,6 +505,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldState: {fileID: 0}
+  id: 0
+  name: 
   numberOfCrew: 0
   resourcesNb: 0
   roomType: 0
