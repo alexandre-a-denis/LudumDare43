@@ -16,8 +16,9 @@ public class RoomTypePanel : RoomUIScript
     void Start()
     {
         text = GetComponentInChildren<Text>();
-        image = GetComponentInChildren<Image>();
 
+        // sets image only once
+        image = GetComponentInChildren<Image>();
         switch(room.roomType)
         {
             case RoomType.FOOD:
@@ -32,9 +33,11 @@ public class RoomTypePanel : RoomUIScript
         }
     }
 
-    // Update is called once per frame
+    // sets text
     void Update()
     {
         text.text = room.roomType.ToString();
+        if (room.roomType!=RoomType.REST)
+            text.text += " " + room.resourcesNb;
     }
 }
