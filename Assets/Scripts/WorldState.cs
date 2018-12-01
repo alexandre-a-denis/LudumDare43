@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 // Container for "global" states
 public class WorldState : MonoBehaviour
@@ -18,23 +19,23 @@ public class WorldState : MonoBehaviour
 
         // Unique "rest" room...
         restRoom = NewRoom(roomId++, "Rest Room", totalCrew, 0, RoomType.REST);
-        rooms.Add(restRoom.id, restRoom);
+        this.rooms.Add(restRoom.id, restRoom);
 
         // ... then some "food" rooms...
         for (int i = 0; i < 3; i++)
         {
             Room r = NewRoom(roomId++, "Cantina " + i, 0, 400, RoomType.FOOD);
-            rooms.Add(r.id, r);
+            this.rooms.Add(r.id, r);
         }
 
         // ... add some "relic" rooms. 
         for (int i = 0; i < 3; i++)
         {
             Room r = NewRoom(roomId++, "Bio-harzard " + i, 0, 400, RoomType.RELICS);
-            rooms.Add(r.id, r);
+            this.rooms.Add(r.id, r);
         }
 
-        foreach (var room in rooms)
+        foreach (var room in this.rooms)
         {
             Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType + " with " + room.Value.numberOfCrew + " members");
         }
@@ -46,7 +47,7 @@ public class WorldState : MonoBehaviour
         newRoom.transform.SetParent(canvas.transform, false);
 
         newRoom.id = id;
-        newRoom.name = name;
+        newRoom.roomName = name;
         newRoom.roomStatus = RoomStatus.OPERATIONAL;
         newRoom.numberOfCrew = numberOfCrew;
         newRoom.resourcesNb = resourcesNb;
@@ -79,7 +80,7 @@ public class WorldState : MonoBehaviour
                 {
                     restRoom.numberOfCrew -= crewAmount;
                     r.numberOfCrew += crewAmount;
-                    Debug.Log("Added " + crewAmount + " to " + r.id  + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
+                    Debug.Log("Added " + crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
                 }
             }
             else
@@ -117,24 +118,41 @@ public class WorldState : MonoBehaviour
     // Number of food units (each crew member uses 1 food per turn). If no food is left, crew will starve/die.
     int foodAmount;
 
+    public int totalFood()
+    {
+        return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).Sum(r => r.numberOfCrew);
+    }
+
+    private void consumeFood(int amount)
+    {
+        List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList();
+        int nbFoodRooms = foodRooms.Count();
+        for (int i = 0; i < amount; i++)
+        {
+            foodRooms[Random.Range(0, nbFoodRooms)].resourcesNb -= 1;
+        }
+    }
+
+    private void logFoodRoom()
+    {
+        this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList().ForEach(r => Debug.Log(r.roomName + " " + r.resourcesNb));
+    }
+
     // Level of hope. Hope is not "consumed" like food is. It will affect capacity of crew during events.
     int hopeLevel;
-
-
-    // Rooms & crew in them
-
 
 
     // Increase turn count. Perform "end of turn"
     public void NextTurn()
     {
         // Consume food (1 unit per crew)
-        foodAmount -= totalCrew;
-        if (foodAmount < 0)
+        consumeFood(totalCrew);
+        if (totalFood() < 0)
         {
             end = true;
             Debug.Log("Negative food, you loose");
         }
+        logFoodRoom();
 
         // Check if some crew remains
         if (totalCrew <= 0)

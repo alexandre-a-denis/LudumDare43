@@ -12,7 +12,7 @@ public class Room : MonoBehaviour
     public WorldState worldState;
 
     public int id; // internal unique id, not for display I guess
-    public string name; // display name for the user to know which room we are talking about
+    public string roomName; // display name for the user to know which room we are talking about
     public int numberOfCrew = 0;
     public int resourcesNb = 0;
     public RoomType roomType = RoomType.FOOD;
