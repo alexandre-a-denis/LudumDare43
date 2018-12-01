@@ -69,7 +69,7 @@ public class WorldState : MonoBehaviour
     // Get current total number of crew members
     public int CurrentCrew()
     {
-        return  this.rooms.Values.Sum(r => r.numberOfCrew);
+        return this.rooms.Values.Sum(r => r.numberOfCrew);
     }
 
     // Moves crew between the common room and the other rooms
@@ -157,6 +157,11 @@ public class WorldState : MonoBehaviour
         return CurrentRelics() / ((float)InitialRelics);
     }
 
+    public string CurrentHopeFormatted()
+    {
+        return string.Format("{0}%", Mathf.Round(this.CurrentHope() * 100));
+    }
+
     // ====================== TURNS ====================== 
 
     // Number of turns before game ends.
@@ -166,7 +171,6 @@ public class WorldState : MonoBehaviour
     public int CurrentTurn = 1;
 
     public TurnPhases CurrentPhase = TurnPhases.DRAMA;
-
 
     // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
     public bool End = false;
