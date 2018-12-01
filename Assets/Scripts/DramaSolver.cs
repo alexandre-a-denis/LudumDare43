@@ -33,15 +33,13 @@ public static class DramaSolver
 		return new DramaReport(drama.Room, oldResourceQty, 0);
 	}
 
-	private static DramaReport TryToSaveBoth(Drama drama)
+	private static DramaReport TryToSaveBoth(Drama drama, float currentHope)
 	{
 		int oldResourceQty = drama.Room.resourcesNb;
 		int oldCrewQty = drama.Room.numberOfCrew;
 
 		int maybeSurvivorQty = Enumerable.Range(1, oldCrewQty).Select(index => Random.Range(0.0f, 1.0f)).Count(value => value > 0.1f);
-		
-		float hope = 0.7f;
-		bool willRoomBeDestroyed = Random.Range((float)(System.Math.Sqrt(maybeSurvivorQty) * 0.1f), 1.0f) > (1.0f - hope);
+		bool willRoomBeDestroyed = Random.Range((float)(System.Math.Sqrt(maybeSurvivorQty) * 0.1f), 1.0f) > (1.0f - currentHope);
 
 		if (willRoomBeDestroyed)
 		{
@@ -54,13 +52,13 @@ public static class DramaSolver
 		return new DramaReport(drama.Room, 0, deadCrewQty);
 	}
 
-	public static DramaReport Process(Drama drama, DramaSolvingOption option)
+	public static DramaReport Process(Drama drama, DramaSolvingOption option, float currentHope)
 	{
 		switch (option)
 		{
 			case DramaSolvingOption.SaveRoom: return SaveRoom(drama);
 			case DramaSolvingOption.SaveCrew: return SaveCrew(drama);
-			case DramaSolvingOption.TryToSaveBoth: return TryToSaveBoth(drama);
+			case DramaSolvingOption.TryToSaveBoth: return TryToSaveBoth(drama, currentHope);
 			default: throw new System.Exception("Option not implemented");
 		}
 	}
