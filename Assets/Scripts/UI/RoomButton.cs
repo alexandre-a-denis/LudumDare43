@@ -8,17 +8,31 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 {
     public int increment = 1;
     readonly float incrementAfterSecs = 0.1f;
+    
+    Button button;
+
+    void Start()
+    {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(TaskOnClick);
+    }
+
 
     bool pressed = false;
+    bool continuousIncrement = false;
     float mouseDownTime = 0;
+    
+
     public void OnPointerDown(PointerEventData eventData)
     {
         pressed = true;
+        continuousIncrement = false;
+        mouseDownTime = 0;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-       pressed = false;
+        pressed = false;
         mouseDownTime = 0;
     }
 
@@ -27,11 +41,23 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
         if (pressed)
         {
             mouseDownTime += Time.deltaTime;
-            if (mouseDownTime > incrementAfterSecs)
+
+            if (mouseDownTime > 2 * incrementAfterSecs)
+                continuousIncrement = true;
+
+            if (continuousIncrement)
             {
-                mouseDownTime = 0;
-                room.AddCrew(increment);
+                if (mouseDownTime > incrementAfterSecs)
+                {
+                    mouseDownTime = 0;
+                    room.AddCrew(increment);
+                }
             }
         }
+    }
+
+    void TaskOnClick()
+    {
+        room.AddCrew(increment);
     }
 }

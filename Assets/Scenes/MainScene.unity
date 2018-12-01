@@ -1089,7 +1089,7 @@ MonoBehaviour:
   turnCountLimit: 20
   turnCount: 1
   end: 0
-  totalCrew: 0
+  totalCrew: 100
   unassignedCrew: 0
 --- !u!212 &1779573135
 SpriteRenderer:
@@ -1263,6 +1263,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114821745462343080, guid: 325b26f3a82578748af39cde460b790f,
+        type: 2}
+      propertyPath: worldState
+      value: 
+      objectReference: {fileID: 1645309336}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 325b26f3a82578748af39cde460b790f, type: 2}
   m_IsPrefabAsset: 0
