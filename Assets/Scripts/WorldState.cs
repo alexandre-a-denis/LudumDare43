@@ -129,14 +129,11 @@ public class WorldState : MonoBehaviour
     // Consume food from rooms
     private void ConsumeFood(int amount)
     {
-        List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.resourcesNb > 0).ToList();
-
-        // Check for rooms without food 
-
-        int nbFoodRooms = foodRooms.Count();
-        for (int i = 0; i < amount; i++)
+        while (amount > 0)
         {
-            foodRooms[Random.Range(0, nbFoodRooms)].resourcesNb -= 1;
+            // We do fetch the list of room each time to ensure we correctly filter empty rooms. This is not efficient but should be correct.
+            List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.resourcesNb > 0).ToList();
+            rooms[Random.Range(0, rooms.Count)].resourcesNb -= 1;
         }
     }
 
