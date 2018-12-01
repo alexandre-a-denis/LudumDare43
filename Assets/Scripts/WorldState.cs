@@ -35,7 +35,7 @@ public class WorldState : MonoBehaviour
             Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
-        InitialRelic = CurrentRelic();
+        InitialRelics = CurrentRelics();
 
         foreach (var room in this.rooms)
         {
@@ -148,16 +148,16 @@ public class WorldState : MonoBehaviour
     // ====================== HOPE ====================== 
     // Unlike Food, Hope is not a stock. Hope is calculated based on the number of Relics on the ship relative to the initial number of relics
 
-    public int CurrentRelic()
+    public int CurrentRelics()
     {
         return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS).Sum(r => r.resourcesNb);
     }
 
-    private int InitialRelic;
+    private int InitialRelics;
 
     public float CurrentHope()
     {
-        return CurrentRelic() / ((float)InitialRelic);
+        return CurrentRelics() / ((float)InitialRelics);
     }
 
     // ====================== TURNS ====================== 
