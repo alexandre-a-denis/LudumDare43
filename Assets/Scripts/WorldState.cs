@@ -7,10 +7,13 @@ public class WorldState : MonoBehaviour
 {
 
     // Number of turns before game ends.
-    int turnCountLimit = 20;
+    private int turnCountLimit = 20;
 
     // Current turn count.
     public int turnCount = 1;
+
+    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
+    public bool end = false;
 
     // Defines the number of human in the ship.
     int crewSize;
@@ -24,12 +27,28 @@ public class WorldState : MonoBehaviour
     // Increase turn count. Perform "end of turn"
     public void NextTurn()
     {
-        turnCount += 1;
-        if (turnCount < turnCountLimit)
-            Debug.Log("TurnCount increased to " + turnCount);
-        else
-            Debug.Log("Reached max turn");
+        // Consume food (1 unit per crew)
+        foodAmount -= crewSize;
+        if (foodAmount < 0)
+        {
+            // No more food, you loose
+            end = true;
+        }
+
+        if (!end)
+        {
+            // Increase turn count & check for max number of turns
+            turnCount += 1;
+            if (turnCount < turnCountLimit)
+                Debug.Log("TurnCount increased to " + turnCount);
+            else
+            {
+                end = true;
+                Debug.Log("Reached max turn");
+            }
+        }
     }
+
 
 
 }
