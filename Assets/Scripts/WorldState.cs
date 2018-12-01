@@ -12,13 +12,22 @@ public class WorldState : MonoBehaviour
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
     private Room restRoom;
 
+    // Number of turns before game ends.
+    public int turnCountLimit = 20;
+
+    // Current turn count.
+    public int turnCount = 1;
+
+    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
+    public bool end = false;
+
     void Start()
     {
         // Create all rooms
         int roomId = 0;
 
         // Unique "rest" room...
-        restRoom = NewRoom(roomId++, "Rest Room", totalCrew, 0, RoomType.REST);
+        restRoom = NewRoom(roomId++, "Rest Room", 50, 0, RoomType.REST);
         this.rooms.Add(restRoom.id, restRoom);
 
         // ... then some "food" rooms...
@@ -37,7 +46,17 @@ public class WorldState : MonoBehaviour
 
         foreach (var room in this.rooms)
         {
+            if (room.Value.roomType != RoomType.REST)
+            {
+                int nbCrew = Random.Range(0, restRoom.numberOfCrew / 2);
+                AddCrewToRoom(room.Value, nbCrew);
+            }
+        }
+
+        foreach (var room in this.rooms)
+        {
             Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType + " with " + room.Value.numberOfCrew + " members");
+
         }
     }
 
@@ -57,6 +76,15 @@ public class WorldState : MonoBehaviour
         return newRoom;
     }
 
+    // ====================== CREW ====================== 
+
+    // Get current total number of crew members
+    public int totalCrew()
+    {
+        return this.rooms.Values.Sum(r => r.numberOfCrew);
+    }
+
+    // Moves crew between the rest room and the other rooms
     public void AddCrewToRoom(Room r, int crewAmount)
     {
         if (crewAmount == 0)
@@ -100,29 +128,17 @@ public class WorldState : MonoBehaviour
         }
     }
 
-    // Number of turns before game ends.
-    public int turnCountLimit = 20;
+    // ====================== FOOD ====================== 
+    // Food is a stock present in the ship at the start of a game. Food is consumed automatically each turn (1 unit per crew).
+    // Food is stored into rooms. Loosing a food room removes all food it contained. Food is consumed from food rooms randomly.
 
-    // Current turn count.
-    public int turnCount = 1;
-
-    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
-    public bool end = false;
-
-    // Defines the number of human in the ship.
-    public int totalCrew;
-
-    // Crew that is not assigned to any room
-    public int unassignedCrew;
-
-    // Number of food units (each crew member uses 1 food per turn). If no food is left, crew will starve/die.
-    int foodAmount;
-
+    // Get current total amount of food
     public int totalFood()
     {
-        return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).Sum(r => r.numberOfCrew);
+        return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).Sum(r => r.resourcesNb);
     }
 
+    // Consume food from rooms
     private void consumeFood(int amount)
     {
         List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList();
@@ -138,6 +154,8 @@ public class WorldState : MonoBehaviour
         this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList().ForEach(r => Debug.Log(r.roomName + " " + r.resourcesNb));
     }
 
+    // ====================== HOPE ====================== 
+
     // Level of hope. Hope is not "consumed" like food is. It will affect capacity of crew during events.
     int hopeLevel;
 
@@ -149,19 +167,19 @@ public class WorldState : MonoBehaviour
         Debug.Log(newDrama);
 
         // Consume food (1 unit per crew)
-        consumeFood(totalCrew);
+        consumeFood(totalCrew());
         if (totalFood() < 0)
         {
             end = true;
-            Debug.Log("Negative food, you loose");
+            Debug.Log("!! Negative food, you loose");
         }
         logFoodRoom();
 
         // Check if some crew remains
-        if (totalCrew <= 0)
+        if (totalCrew() <= 0)
         {
             end = true;
-            Debug.Log("Negative crew (all people died), you loose");
+            Debug.Log("!! Negative crew (all people died), you loose");
         }
 
         if (!end)
@@ -173,7 +191,7 @@ public class WorldState : MonoBehaviour
             else
             {
                 end = true;
-                Debug.Log("Reached max turn, you win");
+                Debug.Log("!! Reached max turn, you win");
             }
         }
     }
