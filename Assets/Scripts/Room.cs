@@ -20,7 +20,7 @@ public class Room : MonoBehaviour
 
     public void Destroy()
     {
-        Debug.Log("Destryind room " + id);
+        Debug.Log("Destroying room " + id);
         roomStatus = RoomStatus.DESTROYED;
         numberOfCrew = 0;
         resourcesNb = 0;
