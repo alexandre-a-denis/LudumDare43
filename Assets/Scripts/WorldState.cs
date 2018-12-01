@@ -13,7 +13,6 @@ public class WorldState : MonoBehaviour
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
     private Room commonRoom;
 
-
     void Start()
     {
         // Create all rooms
@@ -36,6 +35,7 @@ public class WorldState : MonoBehaviour
             Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
+        InitialRelic = CurrentRelic();
 
         foreach (var room in this.rooms)
         {
@@ -129,7 +129,10 @@ public class WorldState : MonoBehaviour
     // Consume food from rooms
     private void ConsumeFood(int amount)
     {
-        List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList();
+        List<Room> foodRooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.resourcesNb > 0).ToList();
+
+        // Check for rooms without food 
+
         int nbFoodRooms = foodRooms.Count();
         for (int i = 0; i < amount; i++)
         {
@@ -143,11 +146,18 @@ public class WorldState : MonoBehaviour
     }
 
     // ====================== HOPE ====================== 
-    // Unlike Food, Hope is not a stock. Hope is calculated based on the number of Relics on the ship (5 hope point per relic)
+    // Unlike Food, Hope is not a stock. Hope is calculated based on the number of Relics on the ship relative to the initial number of relics
 
-    public int CurrentHope()
+    public int CurrentRelic()
     {
-        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS).Sum(r => r.resourcesNb) * 5;
+        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS).Sum(r => r.resourcesNb);
+    }
+
+    private int InitialRelic;
+
+    public float CurrentHope()
+    {
+        return CurrentRelic() / ((float)InitialRelic);
     }
 
     // ====================== TURNS ====================== 
