@@ -612,7 +612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1645309336}
-  property: turnCount
+  property: CurrentTurn
   prefix: 'Turn: '
 --- !u!114 &1034523271
 MonoBehaviour:
@@ -968,9 +968,9 @@ MonoBehaviour:
   roomPrefab: {fileID: 114821745462343080, guid: 325b26f3a82578748af39cde460b790f,
     type: 2}
   canvas: {fileID: 1808671869}
-  turnCountLimit: 20
-  turnCount: 1
-  end: 0
+  CurrentTurn: 1
+  CurrentPhase: 0
+  End: 0
 --- !u!1 &1808671869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1033,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.7000122, y: -1.6000061}
+  m_AnchoredPosition: {x: -2.7000122, y: -1.5999756}
   m_SizeDelta: {x: -33.3, y: -34.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2029099882
