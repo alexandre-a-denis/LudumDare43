@@ -41,6 +41,7 @@ public class WorldState : MonoBehaviour
         newRoom.numberOfCrew = numberOfCrew;
         newRoom.resourcesNb = resourcesNb;
         newRoom.roomType = type;
+        newRoom.worldState = this;
 
         return newRoom;
     }

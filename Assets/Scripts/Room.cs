@@ -9,6 +9,7 @@ public enum RoomStatus { OPERATIONAL, DESTROYED }
 // A Room
 public class Room : MonoBehaviour
 {
+    public WorldState worldState;
 
     public int numberOfCrew;
     public int resourcesNb;
