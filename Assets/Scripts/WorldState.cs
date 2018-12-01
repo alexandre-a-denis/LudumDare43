@@ -69,7 +69,7 @@ public class WorldState : MonoBehaviour
     // Get current total number of crew members
     public int CurrentCrew()
     {
-        return this.rooms.Values.Sum(r => r.numberOfCrew);
+        return  this.rooms.Values.Sum(r => r.numberOfCrew);
     }
 
     // Moves crew between the common room and the other rooms
@@ -123,7 +123,7 @@ public class WorldState : MonoBehaviour
     // Get current total amount of food
     public int CurrentFood()
     {
-        return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).Sum(r => r.resourcesNb);
+        return this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.roomStatus == RoomStatus.OPERATIONAL).Sum(r => r.resourcesNb);
     }
 
     // Consume food from rooms
@@ -132,15 +132,14 @@ public class WorldState : MonoBehaviour
         while (amount > 0)
         {
             // We do fetch the list of room each time to ensure we correctly filter empty rooms. This is not efficient but should be correct.
-            List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.resourcesNb > 0).ToList();
+            List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.roomStatus == RoomStatus.OPERATIONAL && r.resourcesNb > 0).ToList();
+            if (rooms.Count == 0)
+            {
+                break;
+            }
             rooms[Random.Range(0, rooms.Count)].resourcesNb -= 1;
             amount--;
         }
-    }
-
-    private void LogFoodRoom()
-    {
-        this.rooms.Values.Where(r => r.roomType == RoomType.FOOD).ToList().ForEach(r => Debug.Log(r.roomName + " " + r.resourcesNb));
     }
 
     // ====================== HOPE ====================== 
@@ -148,7 +147,7 @@ public class WorldState : MonoBehaviour
 
     public int CurrentRelics()
     {
-        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS).Sum(r => r.resourcesNb);
+        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS && r.roomStatus == RoomStatus.OPERATIONAL).Sum(r => r.resourcesNb);
     }
 
     private int InitialRelics;
@@ -188,18 +187,17 @@ public class WorldState : MonoBehaviour
 
         // Consume food (1 unit per crew)
         ConsumeFood(CurrentCrew());
-        if (CurrentFood() < 0)
+        if (CurrentFood() <= 0)
         {
             End = true;
-            Debug.Log("!! Negative food, you loose");
+            Debug.Log("No more food, you loose !!!!!!!!!!!!!!");
         }
-        LogFoodRoom();
 
         // Check if some crew remains
         if (CurrentCrew() <= 0)
         {
             End = true;
-            Debug.Log("!! Negative crew (all people died), you loose");
+            Debug.Log("No more crew, you loose !!!!!!!!!!!!");
         }
 
         if (!End)
@@ -211,7 +209,7 @@ public class WorldState : MonoBehaviour
             else
             {
                 End = true;
-                Debug.Log("!! Reached max turn, you win");
+                Debug.Log("Reached max turn, you win !!!!!!!!!!!!");
             }
         }
     }
