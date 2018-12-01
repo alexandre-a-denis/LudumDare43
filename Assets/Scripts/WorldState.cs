@@ -37,7 +37,17 @@ public class WorldState : MonoBehaviour
 
         foreach (var room in this.rooms)
         {
+            if (room.Value.roomType != RoomType.REST)
+            {
+                int nbCrew = Random.Range(0, restRoom.numberOfCrew / 2);
+                AddCrewToRoom(room.Value, nbCrew);
+            }
+        }
+
+        foreach (var room in this.rooms)
+        {
             Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType + " with " + room.Value.numberOfCrew + " members");
+
         }
     }
 
