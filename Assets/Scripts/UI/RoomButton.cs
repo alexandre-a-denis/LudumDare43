@@ -2,22 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class RoomButton : RoomUIScript
+public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 {
     public int increment = 1;
-    Button button;
+    readonly float incrementAfterSecs = 0.1f;
 
-    // Use this for initialization
-    void Start()
+    bool pressed = false;
+    float mouseDownTime = 0;
+    public void OnPointerDown(PointerEventData eventData)
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(TaskOnClick);
+        pressed = true;
     }
 
-    void TaskOnClick()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        room.AddCrew(increment);
-        Debug.Log("Added " + increment + " to " + room.ToString());
+       pressed = false;
+        mouseDownTime = 0;
+    }
+
+    void Update()
+    {
+        if (pressed)
+        {
+            mouseDownTime += Time.deltaTime;
+            if (mouseDownTime > incrementAfterSecs)
+            {
+                mouseDownTime = 0;
+                room.AddCrew(increment);
+            }
+        }
     }
 }
