@@ -145,6 +145,9 @@ public class WorldState : MonoBehaviour
     // Increase turn count. Perform "end of turn"
     public void NextTurn()
     {
+        Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
+        Debug.Log(newDrama);
+
         // Consume food (1 unit per crew)
         consumeFood(totalCrew);
         if (totalFood() < 0)
