@@ -175,6 +175,8 @@ public class WorldState : MonoBehaviour
 
         Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
         Debug.Log(newDrama);
+        DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth);
+        Debug.Log(newReport);
 
         // Consume food (1 unit per crew)
         ConsumeFood(CurrentCrew());
