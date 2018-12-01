@@ -17,10 +17,10 @@ public class Drama
 	public static Drama CreateRandomOne(List<Room> rooms)
 	{
 		List<DramaType> dramaTypes = System.Enum.GetValues(typeof(DramaType)).Cast<DramaType>().ToList();
-		DramaType selectedDramaType = dramaTypes[Random.Range(0, dramaTypes.Count() -1)];
+		DramaType selectedDramaType = dramaTypes[Random.Range(0, dramaTypes.Count())];
 
 		List<Room> validRooms = rooms.Where(room => room.roomType != RoomType.REST).ToList();
-		Room selectedRoom = validRooms[Random.Range(0, validRooms.Count() -1)];
+		Room selectedRoom = validRooms[Random.Range(0, validRooms.Count())];
 
 		return new Drama(selectedDramaType, selectedRoom);
 	}
