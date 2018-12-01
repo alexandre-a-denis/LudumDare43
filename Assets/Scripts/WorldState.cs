@@ -9,43 +9,44 @@ public class WorldState : MonoBehaviour
     public Room roomPrefab;
     public GameObject canvas;
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
-
+    private Room restRoom;
 
     void Start()
     {
         // Create all rooms
-
         int roomId = 0;
 
         // Unique "rest" room...
-        rooms.Add(roomId++, NewRoom(totalCrew, 0, RoomType.REST));
+        restRoom = NewRoom(roomId++, "Rest Room", totalCrew, 0, RoomType.REST);
+        rooms.Add(restRoom.id, restRoom);
 
         // ... then some "food" rooms...
-        for (int i = 0; i < 3; i++) { rooms.Add(roomId++, NewRoom(0, 400, RoomType.FOOD)); }
+        for (int i = 0; i < 3; i++)
+        {
+            Room r = NewRoom(roomId++, "Cantina " + i, 0, 400, RoomType.FOOD);
+            rooms.Add(r.id, r);
+        }
 
-        // ... abd some "relic" rooms. 
-        for (int i = 0; i < 3; i++) { rooms.Add(roomId++, NewRoom(0, 10, RoomType.RELICS)); }
+        // ... add some "relic" rooms. 
+        for (int i = 0; i < 3; i++)
+        {
+            Room r = NewRoom(roomId++, "Bio-harzard " + i, 0, 400, RoomType.RELICS);
+            rooms.Add(r.id, r);
+        }
 
         foreach (var room in rooms)
         {
-            Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType);
+            Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType + " with " + room.Value.numberOfCrew + " members");
         }
-
-        /*
-        for (int i = 0; i < 7; i++)
-        {
-            Vector2 start = rooms[i].transform.position;
-            rooms[i].transform.position = start + new Vector2(0, i);
-        }
-        */
     }
 
-    private Room NewRoom(int numberOfCrew, int resourcesNb, RoomType type)
+    private Room NewRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
     {
         Room newRoom = (Room)Instantiate(roomPrefab) as Room;
         newRoom.transform.SetParent(canvas.transform, false);
 
-
+        newRoom.id = id;
+        newRoom.name = name;
         newRoom.roomStatus = RoomStatus.OPERATIONAL;
         newRoom.numberOfCrew = numberOfCrew;
         newRoom.resourcesNb = resourcesNb;
@@ -53,6 +54,49 @@ public class WorldState : MonoBehaviour
         newRoom.worldState = this;
 
         return newRoom;
+    }
+
+    public void AddCrewToRoom(Room r, int crewAmount)
+    {
+        if (crewAmount == 0)
+        {
+            Debug.Log("Trying to add 0 crew to a room, not allowed");
+        }
+        else if (r.roomType == RoomType.REST)
+        {
+            Debug.Log("Trying to add crew to the rest room, not allowed");
+        }
+        else
+        {
+            if (crewAmount > 0)
+            {
+                // Attempting to move from rest room to target room
+                if (crewAmount > restRoom.numberOfCrew)
+                {
+                    Debug.Log("Cannot add " + crewAmount + " when rest room only contains " + restRoom.numberOfCrew);
+                }
+                else
+                {
+                    restRoom.numberOfCrew -= crewAmount;
+                    r.numberOfCrew += crewAmount;
+                    Debug.Log("Added " + crewAmount + " to " + r.id  + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
+                }
+            }
+            else
+            {
+                // Attempting to move from target room to rest room
+                if (-crewAmount > r.numberOfCrew)
+                {
+                    Debug.Log("Cannot remove " + -crewAmount + " when target room only contains " + r.numberOfCrew);
+                }
+                else
+                {
+                    restRoom.numberOfCrew -= crewAmount;
+                    r.numberOfCrew += crewAmount;
+                    Debug.Log("Removed " + -crewAmount + " to " + r.id + ". It now has " + r.numberOfCrew + " crew members and rest room has " + restRoom.numberOfCrew);
+                }
+            }
+        }
     }
 
     // Number of turns before game ends.
