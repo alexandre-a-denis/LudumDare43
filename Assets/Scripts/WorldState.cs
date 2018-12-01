@@ -24,14 +24,14 @@ public class WorldState : MonoBehaviour
         // ... then some "food" rooms...
         for (int i = 0; i < 3; i++)
         {
-            Room r = NewRoom(roomId++, string.Format("Cantina #{0}", i+1), 0, 400, RoomType.FOOD);
+            Room r = NewRoom(roomId++, string.Format("Cantina #{0}", i + 1), 0, 400, RoomType.FOOD);
             this.rooms.Add(r.id, r);
         }
 
         // ... add some "relic" rooms. 
         for (int i = 0; i < 3; i++)
         {
-            Room r = NewRoom(roomId++, string.Format("Bio-harzard #{0}", i+1), 0, 400, RoomType.RELICS);
+            Room r = NewRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
 
