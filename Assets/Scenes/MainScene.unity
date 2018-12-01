@@ -1659,7 +1659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1645309336}
-  property: CurrentHope
+  property: CurrentHopeFormatted
   prefix: 'Hope: '
 --- !u!114 &1642487707
 MonoBehaviour:
