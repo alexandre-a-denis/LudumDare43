@@ -16,7 +16,7 @@ public class WorldState : MonoBehaviour
         // Create all rooms
 
         int roomId = 0;
-    
+
         // Unique "rest" room...
         rooms.Add(roomId++, NewRoom(totalCrew, 0, RoomType.REST));
 
@@ -30,12 +30,21 @@ public class WorldState : MonoBehaviour
         {
             Debug.Log("Added room " + room.Key + " of type: " + room.Value.roomType);
         }
+
+        /*
+        for (int i = 0; i < 7; i++)
+        {
+            Vector2 start = rooms[i].transform.position;
+            rooms[i].transform.position = start + new Vector2(0, i);
+        }
+        */
     }
 
     private Room NewRoom(int numberOfCrew, int resourcesNb, RoomType type)
     {
         Room newRoom = (Room)Instantiate(roomPrefab) as Room;
         newRoom.transform.SetParent(canvas.transform, false);
+
 
         newRoom.roomStatus = RoomStatus.OPERATIONAL;
         newRoom.numberOfCrew = numberOfCrew;
@@ -103,5 +112,5 @@ public class WorldState : MonoBehaviour
             }
         }
     }
-     
+
 }

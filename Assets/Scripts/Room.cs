@@ -11,12 +11,12 @@ public class Room : MonoBehaviour
 {
     public WorldState worldState;
 
-    public int numberOfCrew=0;
-    public int resourcesNb=0;
+    public int numberOfCrew = 0;
+    public int resourcesNb = 0;
     public RoomType roomType = RoomType.FOOD;
     public RoomStatus roomStatus = RoomStatus.OPERATIONAL;
 
-    
+
 
     public void AddCrew(int number)
     {
