@@ -18,7 +18,9 @@ public class Drama
 	{
 		List<DramaType> dramaTypes = System.Enum.GetValues(typeof(DramaType)).Cast<DramaType>().ToList();
 		DramaType selectedDramaType = dramaTypes[Random.Range(0, dramaTypes.Count() -1)];
-		Room selectedRoom = rooms[Random.Range(0, rooms.Count() -1)];
+
+		List<Room> validRooms = rooms.Where(room => room.roomType != RoomType.REST).ToList();
+		Room selectedRoom = validRooms[Random.Range(0, validRooms.Count() -1)];
 
 		return new Drama(selectedDramaType, selectedRoom);
 	}
@@ -34,6 +36,6 @@ public class Drama
 
 	public override string ToString()
 	{
-		return string.Format("{0} in an unamed room: {1} of {2} could be lost", this.type, this.room.resourcesNb, this.room.roomType);
+		return string.Format("{0} in {1}: {2} of {3} could be lost", this.type, this.room.roomName, this.room.resourcesNb, this.room.roomType);
 	}
 }
