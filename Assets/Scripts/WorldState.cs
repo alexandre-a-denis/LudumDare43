@@ -184,11 +184,13 @@ public class WorldState : MonoBehaviour
     {
         CurrentPhase = TurnPhases.DRAMA;
 
-        Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
-        Debug.Log(newDrama);
-        DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, CurrentHope());
-        Debug.Log(newReport);
-
+        if (Random.Range(1, 10) < 5)
+        {
+            Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
+            Debug.Log(newDrama);
+            DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, CurrentHope());
+            Debug.Log(newReport);
+        }
         // Consume food (1 unit per crew)
         ConsumeFood(CurrentCrew());
         if (CurrentFood() <= 0)
