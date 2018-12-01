@@ -15,12 +15,4 @@ public class RoomUIScript : MonoBehaviour
             return roomPrivate;
         }
     }
-
-
-
-
-    public void AddCrew(int number)
-    {
-        room.AddCrew(number);
-    }
 }
