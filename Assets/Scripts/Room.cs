@@ -26,6 +26,12 @@ public class Room : MonoBehaviour
         resourcesNb = 0;
     }
 
+    public void KillSome(int nb)
+    {
+        Debug.Log("Killing " + nb + " crew in room " + id);
+        numberOfCrew -= nb;
+    }
+
     public void AddCrew(int number)
     {
         worldState.AddCrewToRoom(this, number);
