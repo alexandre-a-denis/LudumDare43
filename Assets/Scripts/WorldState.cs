@@ -134,6 +134,7 @@ public class WorldState : MonoBehaviour
             // We do fetch the list of room each time to ensure we correctly filter empty rooms. This is not efficient but should be correct.
             List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.resourcesNb > 0).ToList();
             rooms[Random.Range(0, rooms.Count)].resourcesNb -= 1;
+            amount--;
         }
     }
 
