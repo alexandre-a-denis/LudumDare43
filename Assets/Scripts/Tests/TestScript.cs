@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour {
 
+    public int value = 10;
+
 	// Use this for initialization
 	void Start () {
         Debug.Log("Hello universe");
