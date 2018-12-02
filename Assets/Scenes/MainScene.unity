@@ -1140,8 +1140,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 390.7, y: -87.7}
-  m_SizeDelta: {x: 611.1, y: 105.4}
+  m_AnchoredPosition: {x: 438.9, y: -87.7}
+  m_SizeDelta: {x: 707.5, y: 105.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &234991317
 MonoBehaviour:
@@ -1175,7 +1175,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: <You can move crew placeholder>
+  m_Text: I can now move crew members.... <placeholder>
 --- !u!222 &234991318
 CanvasRenderer:
   m_ObjectHideFlags: 0

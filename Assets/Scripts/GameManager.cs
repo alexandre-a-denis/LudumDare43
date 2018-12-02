@@ -116,6 +116,12 @@ public class GameManager : MonoBehaviour
         CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
         Debug.Log(CurrentDrama);
 
+        if (CurrentDrama.Room.numberOfCrew == 0)
+        {
+            AutomaticResolution();
+            return;
+        }
+
         // only sets phase after all drama stuff has been made
         eventPanel.ShowChoicePanel();
         CurrentPhase = TurnPhases.DRAMA;
@@ -140,6 +146,16 @@ public class GameManager : MonoBehaviour
     // Evacuate Now ! (triggered by button)
     public void Evacuate()
     {
+        CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction);
+        EndDrama();
+    }
+
+
+    // automatic drama resolution
+    void AutomaticResolution()
+    {
+        Debug.Log("Drama in a room with 0 crew members !! Auto-resolution !");
+        UpdatePrediction(0);
         CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction);
         EndDrama();
     }
