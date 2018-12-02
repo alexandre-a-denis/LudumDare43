@@ -31,6 +31,10 @@ public class DramaSlider : MonoBehaviour
                 oldSacrifiedValue = sacrified;
             }
         }
+    }
 
+    private void OnEnable()
+    {
+        slider.value = 0;
     }
 }
