@@ -93,7 +93,7 @@ public class WorldState : MonoBehaviour
     // ====================== CREW ====================== 
     // Crew are humans used by the IA/player to save rooms. Each crew member adds to the save potential but will die.
     #region CREW
-    private int InitialCrew;
+    public int InitialCrew;
 
     // Get current total number of crew members
     public int CurrentCrew()
