@@ -21,7 +21,7 @@ public class DramaPredictionLabel : MonoBehaviour
             {
                 float probaToSave = GameManager.manager.CurrentDramaOutcomePrediction.EvaluateTotalProbabilityToSaveRoom();
                 string probaToSaveStr = (int)(100 * probaToSave) + "%";
-                text.text = "Proba to save room: " + probaToSaveStr;
+                text.text = "Probability to save the room = " + probaToSaveStr;
             }
         }
     }
