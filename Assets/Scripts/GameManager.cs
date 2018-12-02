@@ -110,12 +110,8 @@ public class GameManager : MonoBehaviour
     {
         // drama and outcome generation (accessed through ui)
         CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
-        CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama);
-        Enumerable.Range(0, 100).ToList().ForEach(index => CurrentDramaOutcomePrediction.GenerateSample(worldState.CurrentHope()));
-
         Debug.Log(CurrentDrama);
-        Debug.Log(CurrentDramaOutcomePrediction);
-
+       
         // only sets phase after all drama stuff has been made
         CurrentPhase = TurnPhases.DRAMA;
     }
@@ -125,31 +121,23 @@ public class GameManager : MonoBehaviour
     {
         StartMove();
     }
+    
 
-    // do action
-    void DoAction(DramaSolvingOption option)
+    // updates prediction upon slider change
+    public void UpdatePrediction(int saved)
     {
-        CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction, option);
+        CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama, saved, worldState.CurrentHope());
+        Debug.Log(CurrentDramaOutcomePrediction);
+    }
+
+
+    // Evacuate Now !
+    public void Evacuate()
+    {
+        CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction);
         EndDrama();
     }
-
-    // button triggered
-    public void OnTrySaveBoth()
-    {
-        DoAction(DramaSolvingOption.TryToSaveBoth);
-    }
-
-    // button triggered
-    public void OnSaveRoom()
-    {
-        DoAction(DramaSolvingOption.SaveRoom);
-    }
-
-    // button triggered
-    public void OnSaveCrew()
-    {
-        DoAction(DramaSolvingOption.SaveCrew);
-    }
+    
 
     #endregion DRAMA REGION
 

@@ -36,83 +36,50 @@ public class DramaOutcomePrediction
 	private const int MAX_SAMPLES = 100;
 
 	private readonly Drama drama;
+	private readonly List<DramaOutcomeSample> samples;
 
-	private readonly Dictionary<DramaSolvingOption, List<DramaOutcomeSample>> sampleMap = new Dictionary<DramaSolvingOption, List<DramaOutcomeSample>> {
-		{ DramaSolvingOption.SaveRoom, new List<DramaOutcomeSample>() },
-		{ DramaSolvingOption.SaveCrew, new List<DramaOutcomeSample>() },
-		{ DramaSolvingOption.TryToSaveBoth, new List<DramaOutcomeSample>() },		
-	};
-
-	public DramaOutcomePrediction(Drama drama)
+	public DramaOutcomePrediction(Drama drama, int escapeCrewQty, float currentHope)
 	{
 		this.drama = drama;
+		this.samples = Enumerable.Range(0, MAX_SAMPLES).Select(sampleIndex => GenerateSample(escapeCrewQty, currentHope)).ToList();
 	}
 
-	public Drama Drama { get {return this.drama;} }
-
-	private void RegisterSample(DramaSolvingOption option, DramaOutcomeSample sample)
-	{
-		this.sampleMap[option].Add(sample);
-		if (this.sampleMap[option].Count > MAX_SAMPLES)
-			this.sampleMap[option].RemoveAt(0);
-	}
-
-	private void GenerateSaveRoomSample()
-	{
-		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, false, 0, this.drama.Room.numberOfCrew);
-		RegisterSample(DramaSolvingOption.SaveRoom, newSample);
-	}
-
-	private void GenerateSaveCrewSample()
-	{
-		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, true, this.drama.Room.resourcesNb, 0);
-		RegisterSample(DramaSolvingOption.SaveCrew, newSample);
-	}
-
-	private void GenerateTryToSaveBothSample(float currentHope)
+	private DramaOutcomeSample GenerateSample(int escapeCrewQty, float currentHope)
 	{
 		int resourceQty = this.drama.Room.resourcesNb;
 		int crewQty = this.drama.Room.numberOfCrew;
 
-		int maybeSurvivorQty = Enumerable.Range(1, crewQty).Select(index => Random.Range(0.0f, 1.0f)).Count(value => value > 0.1f);
-		float survivorsFactor = (float)System.Math.Sqrt(maybeSurvivorQty);
-		bool willRoomBeDestroyed = (Random.Range(0.0f, 1.0f) * survivorsFactor * currentHope) < 1.0f;
+		int sacrificingCrewQty = crewQty - escapeCrewQty;
+		float sacrificingCrewFactor = (float)System.Math.Sqrt(sacrificingCrewQty);
+		bool willRoomBeDestroyed = (Random.Range(0.0f, 1.0f) * sacrificingCrewFactor * currentHope) < 1.0f;
 
-		DramaOutcomeSample newSample = willRoomBeDestroyed
-			? new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, resourceQty, crewQty)
-			: new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, 0, crewQty - maybeSurvivorQty);
-
-		RegisterSample(DramaSolvingOption.TryToSaveBoth, newSample);
+		return new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, willRoomBeDestroyed ? resourceQty : 0, sacrificingCrewQty);
 	}
 
-	public void GenerateSample(float currentHope)
+	public Drama Drama { get {return this.drama;} }
+
+	public DramaOutcomeSample PickOneSample()
 	{
-		GenerateSaveRoomSample();
-		GenerateSaveCrewSample();
-		GenerateTryToSaveBothSample(currentHope);
+		return this.samples[Random.Range(0, this.samples.Count)];
 	}
 
-	public DramaOutcomeSample PickOneSample(DramaSolvingOption option)
+	public float EvaluateProbabilityToLooseRoom()
 	{
-		return this.sampleMap[option][Random.Range(0, this.sampleMap[option].Count)];
+		return this.samples.Count(sample => sample.WillRoomBeDestroyed) / (float)this.samples.Count;
 	}
 
-	public float EvaluateProbabilityToLooseResources(DramaSolvingOption option)
+	public float EvaluateProbabilityToLooseResources()
 	{
-		return this.sampleMap[option].Count(sample => sample.ResourceQtyLoss > 0) / (float)this.sampleMap[option].Count();
+		return this.samples.Count(sample => sample.ResourceQtyLoss > 0) / (float)this.samples.Count;
 	}
 
-	public float EvaluateProbabilityToLooseCrew(DramaSolvingOption option)
+	public float EvaluateProbabilityToLooseCrew()
 	{
-		return this.sampleMap[option].Count(sample => sample.CrewQtyLoss > 0) / (float)this.sampleMap[option].Count();
+		return this.samples.Count(sample => sample.CrewQtyLoss > 0) / (float)this.samples.Count;
 	}
 
 	public override string ToString()
 	{
-		StringBuilder report = new StringBuilder();
-		this.sampleMap.Keys.ToList().ForEach(option => {
-			report.AppendLine(string.Format("{0}: {1}% to loose resources | {2}% to loose crew", option, EvaluateProbabilityToLooseResources(option) * 100, EvaluateProbabilityToLooseCrew(option) * 100));
-		});
-		return report.ToString();
+		return string.Format("{0}% to loose room | {1}% to loose resources | {2}% to loose crew", EvaluateProbabilityToLooseRoom() * 100, EvaluateProbabilityToLooseResources() * 100, EvaluateProbabilityToLooseCrew() * 100);
 	}
 }
