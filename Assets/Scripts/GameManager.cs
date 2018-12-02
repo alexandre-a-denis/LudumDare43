@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum TurnPhases { DRAMA, MOVE }
 
-// overall GameManager, handles phases, game init, 
+// overall GameManager, game init, handles turn structure 
 public class GameManager : MonoBehaviour
 {
     private static GameManager singleton;
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public bool End = false;
 
 
+
     void Awake()
     {
        worldState = FindObjectOfType<WorldState>();
@@ -41,38 +42,33 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
-
+        // in drama phase, disable next turn, disable
     }
 
 
-    // setup initial state
+    // setup initial state, should also be triggered on Reset
     public void Init()
     {
         // should reset worldState as well
         CurrentTurn = 1;
+        StartDrama();
     }
 
 
 
-    public void AfterDrama()
+    /////////////////////// TURN REGION
+    #region TURN REGION
+
+    // starts turn
+    void StartTurn()
     {
-        CurrentPhase = TurnPhases.MOVE;
+        StartDrama();
     }
 
-
-
-    public void NextTurn()
+   
+    // updates resources at the end of turn
+    void EndTurn()
     {
-        CurrentPhase = TurnPhases.DRAMA;
-
-        if (Random.Range(1, 10) < 5)
-        {
-            Drama newDrama = Drama.CreateRandomOne(worldState.GetRooms());
-            Debug.Log(newDrama);
-            DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, worldState.CurrentHope());
-            Debug.Log(newReport);
-        }
-
         // Consume food (1 unit per crew)
         worldState.ConsumeFood(worldState.CurrentCrew());
         if (worldState.CurrentFood() <= 0)
@@ -101,4 +97,55 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    #endregion TURN REGION
+
+
+
+    /////////////////////// DRAMA REGION
+    #region DRAMA REGION
+
+    // starts random drama, 
+    void StartDrama()
+    {
+        CurrentPhase = TurnPhases.DRAMA;
+
+        // disable next button
+
+        Drama newDrama = Drama.CreateRandomOne(worldState.GetRooms());
+        Debug.Log(newDrama);
+        DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, worldState.CurrentHope());
+        Debug.Log(newReport);
+
+        // this should only be done after hitting action choice
+        EndDrama();
+    }
+
+    // ends the drama, starts the move phase
+    void EndDrama()
+    {
+        StartMove();
+    }
+
+    #endregion DRAMA REGION
+
+
+
+    /////////////////////// MOVE REGION
+    #region MOVE REGION
+
+    // starts
+    void StartMove()
+    {
+        CurrentPhase = TurnPhases.MOVE;
+    }
+
+    // end move triggered when hitting NextTurn Button
+    public void EndMove()
+    {
+        EndTurn();
+        StartDrama(); // only if not gameover
+    }
+
+    #endregion MOVE REGION
 }

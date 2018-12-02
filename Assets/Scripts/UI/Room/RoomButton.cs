@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// room button to increase or decrease crew members, disabled in DRAMA phase
 public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 {
     public int increment = 1;
     readonly float incrementAfterSecs = 0.1f;
-    
+
     Button button;
 
     void Start()
@@ -18,10 +19,7 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 
         if (room.roomType == RoomType.COMMON)
             gameObject.SetActive(false);
-
-
     }
-
 
     bool pressed = false;
     bool continuousIncrement = false;
@@ -43,7 +41,9 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
-        if (pressed)
+        button.interactable = GameManager.manager.CurrentPhase == TurnPhases.DRAMA;
+
+        if (pressed && button.interactable)
         {
             mouseDownTime += Time.deltaTime;
 
