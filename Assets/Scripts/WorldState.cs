@@ -23,14 +23,7 @@ public class WorldState : MonoBehaviour
         int roomId = 0;
 
         if (rooms.Count > 0)
-        {
-            // Remove previous rooms
-            Destroy(commonRoom);
-            commonRoom = null;
-            rooms.Values.ToList().ForEach(r => Destroy(r));
-            rooms = new Dictionary<int, Room>();
-        }
-
+            DestroyRooms();
 
         // Unique "common" room...
         commonRoom = CreateRoom(roomId++, "Common room", 50, 0, RoomType.COMMON);
@@ -58,6 +51,20 @@ public class WorldState : MonoBehaviour
         }
 
         InitialCrew = CurrentCrew();
+    }
+
+    // Destroy rooms
+    public void DestroyRooms()
+    {
+        // Remove previous rooms
+        Destroy(commonRoom.gameObject);
+        commonRoom = null;
+
+        rooms.Values.ToList().ForEach(r =>
+        {
+            Destroy(r.gameObject);
+        });
+        rooms = new Dictionary<int, Room>();
     }
 
     private Room CreateRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)

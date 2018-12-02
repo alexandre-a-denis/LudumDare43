@@ -11,7 +11,7 @@ public class PanelHandler : MonoBehaviour
 
     public GameObject introPanel;
     public GameObject endPanel;
-
+    public GameObject shipPanel;
     public GameObject dramaChoicePanel;
     public GameObject dramaOutcomePanel;
     public GameObject dramaMovePanel;
@@ -33,6 +33,7 @@ public class PanelHandler : MonoBehaviour
         dramaOutcomePanel.SetActive(false);
         dramaMovePanel.SetActive(false);
 
+        shipPanel.SetActive(true);
         eventPanel.SetActive(true);
         statusPanel.SetActive(true);
         dramaChoicePanel.SetActive(true);
@@ -44,6 +45,7 @@ public class PanelHandler : MonoBehaviour
         dramaOutcomePanel.SetActive(false);
         dramaMovePanel.SetActive(false);
         dramaChoicePanel.SetActive(false);
+        shipPanel.SetActive(false);
 
         endPanel.SetActive(true);
 

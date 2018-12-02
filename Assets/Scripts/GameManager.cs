@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         // should reset worldState as well
+        End = false;
         CurrentTurn = 1;
         worldState.Init();
         StartTurn();
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     void EndGame(bool won, string cause)
     {
+        worldState.DestroyRooms();
         panelHandler.ShowEndPanel(won, cause);
     }
 
@@ -186,7 +188,8 @@ public class GameManager : MonoBehaviour
     public void EndMove()
     {
         EndTurn();
-        StartDrama(); // only if not gameover
+        if (!End)
+           StartDrama(); // only if not gameover
     }
 
     #endregion MOVE REGION
