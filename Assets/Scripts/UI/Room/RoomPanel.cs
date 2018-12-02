@@ -9,9 +9,15 @@ public class RoomPanel : RoomUIScript
     bool deactivated;
     Image roomBackground;
 
+    // alert handling
+    bool alertStarted;
+    float fadeSpeed = 3.5f;
+    Color color; // room background initial color
+
     void Start()
     {
         roomBackground = GetComponent<Image>();
+        color = roomBackground.color;
     }
 
     // Update is called once per frame
@@ -28,5 +34,39 @@ public class RoomPanel : RoomUIScript
                     child.gameObject.SetActive(false);
             }
         }
+
+        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
+        {
+            if (GameManager.manager.CurrentDrama.Room == room)
+            {
+                if (!alertStarted)
+                {
+                    alertStarted = true;
+                    StartCoroutine("Fade");
+                }
+            }
+            else
+            {
+                alertStarted = false;
+                StopCoroutine("Fade");
+            }
+        }
+        else
+        {
+            alertStarted = false;
+            StopCoroutine("Fade");
+            roomBackground.color = deactivated ? Color.red : color;
+        }
     }
+
+
+    IEnumerator Fade()
+    {
+        while (true)
+        {
+           roomBackground.color = Color.Lerp(color, Color.red, Mathf.PingPong(fadeSpeed*Time.time, 1));
+            yield return null;
+        }
+    }
+
 }
