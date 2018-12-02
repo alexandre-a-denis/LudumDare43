@@ -36,8 +36,8 @@ public class RoomTypePanel : RoomUIScript
     // sets text
     void Update()
     {
-        text.text = room.roomType.ToString();
+        text.text = "";
         if (room.roomType!=RoomType.COMMON)
-            text.text += " " + room.resourcesNb;
+            text.text = room.resourcesNb.ToString();
     }
 }
