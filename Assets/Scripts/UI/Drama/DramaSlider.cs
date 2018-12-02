@@ -23,7 +23,7 @@ public class DramaSlider : MonoBehaviour
         {
             Room room = GameManager.manager.CurrentDrama.Room;
             int sacrified = (int)(slider.value * room.numberOfCrew);
-            text.text = sacrified + "/" + room.numberOfCrew + " Crew sacrified";
+            text.text = sacrified + "/" + room.numberOfCrew + " will attempt a heroic save (and sacrifice their lives..)";
 
             if (sacrified != oldSacrifiedValue)
             {
