@@ -68,7 +68,7 @@ public class IAText
     public static string OnRelicGameOver()
     {
         return RandomComment(new List<string>() {
-            "" });
+            "OnRelicGameOver PH text........................................." });
     }
 
     #endregion Game over

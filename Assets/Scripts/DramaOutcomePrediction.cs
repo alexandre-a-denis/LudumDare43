@@ -75,7 +75,8 @@ public class DramaOutcomePrediction
 		int crewQty = this.drama.Room.numberOfCrew;
 
 		int maybeSurvivorQty = Enumerable.Range(1, crewQty).Select(index => Random.Range(0.0f, 1.0f)).Count(value => value > 0.1f);
-		bool willRoomBeDestroyed = Random.Range((float)(System.Math.Sqrt(maybeSurvivorQty) * 0.1f), 1.0f) < (1.0f - currentHope);
+		float survivorsFactor = (float)System.Math.Sqrt(maybeSurvivorQty);
+		bool willRoomBeDestroyed = (Random.Range(0.0f, 1.0f) * survivorsFactor * currentHope) < 1.0f;
 
 		DramaOutcomeSample newSample = willRoomBeDestroyed
 			? new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, resourceQty, crewQty)
