@@ -22,6 +22,16 @@ public class WorldState : MonoBehaviour
         // Create all rooms
         int roomId = 0;
 
+        if (rooms.Count > 0)
+        {
+            // Remove previous rooms
+            Destroy(commonRoom);
+            commonRoom = null;
+            rooms.Values.ToList().ForEach(r => Destroy(r));
+            rooms = new Dictionary<int, Room>();
+        }
+
+
         // Unique "common" room...
         commonRoom = CreateRoom(roomId++, "Common room", 50, 0, RoomType.COMMON);
         this.rooms.Add(commonRoom.id, commonRoom);
@@ -36,7 +46,7 @@ public class WorldState : MonoBehaviour
         // ... add some "relic" rooms. 
         for (int i = 0; i < 3; i++)
         {
-            Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
+            Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 1, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
 
