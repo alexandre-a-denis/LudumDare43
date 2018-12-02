@@ -20,6 +20,16 @@ public class IAText
     /////////////////////// Resource loss
     #region Resource Loss
 
+    public static string NoLoss()
+    {
+        return "NoLoss PH text...........................................";
+    }
+
+    public static string RoomLoss()
+    {
+        return "RoomLoss PH text.........................................";
+    }
+
     public static string OnCrewLoss()
     {
         return RandomComment(new List<string>() {
@@ -61,7 +71,7 @@ public class IAText
     public static string OnRelicGameOver()
     {
         return RandomComment(new List<string>() {
-            "" });
+            "OnRelicGameOver PH text........................................." });
     }
 
     #endregion Game over
