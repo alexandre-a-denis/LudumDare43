@@ -5,8 +5,8 @@ using System.Linq;
 
 public enum DramaType
 {
-	fire,
-	hullBreach
+	Fire,
+	HullBreach
 }
 
 public class Drama
@@ -36,6 +36,6 @@ public class Drama
 
 	public override string ToString()
 	{
-		return string.Format("{0} in {1}: {2} of {3} could be lost", this.type, this.room.roomName, this.room.resourcesNb, this.room.roomType);
+		return string.Format("{0} in {1}: {2} of {3} could be lost!", this.type, this.room.roomName, this.room.resourcesNb, this.room.roomType);
 	}
 }
