@@ -28,19 +28,6 @@ public class DramaOutcomeLabel : MonoBehaviour
 
     static string IAOutcomeDescription()
     {
-        string ret = "";
-        DramaReport report = GameManager.manager.CurrentDramaReport;
-        if (report.HasRoomBeenDestroyed)
-            if (report.RoomType == RoomType.FOOD)
-                ret += IAText.OnFoodLoss() + " ";
-            else if (report.RoomType == RoomType.RELICS)
-                ret += IAText.OnRelicLoss() + " ";
-        if (report.CrewQtyLoss > 0)
-            ret += IAText.OnCrewLoss();
-
-        if (ret.Length == 0)
-            ret += IAText.OnNothingLost();
-
-        return ret;
+        return IAText.CommentOnDramaOutcome(GameManager.manager.CurrentDramaReport);
     }
 }
