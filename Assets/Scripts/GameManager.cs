@@ -65,13 +65,13 @@ public class GameManager : MonoBehaviour
     {
         CurrentPhase = TurnPhases.DRAMA;
 
-        if (Random.Range(1, 10) < 5)
-        {
-            Drama newDrama = Drama.CreateRandomOne(worldState.GetRooms());
-            Debug.Log(newDrama);
-            DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, worldState.CurrentHope());
-            Debug.Log(newReport);
-        }
+        Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
+        Debug.Log(newDrama);
+        DramaOutcomePrediction newPrediction = new DramaOutcomePrediction(newDrama);
+        Enumerable.Range(0, 100).ToList().ForEach(index => newPrediction.GenerateSample(CurrentHope()));
+        Debug.Log(newPrediction);
+        DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, CurrentHope());
+        Debug.Log(newReport);
 
         // Consume food (1 unit per crew)
         worldState.ConsumeFood(worldState.CurrentCrew());
