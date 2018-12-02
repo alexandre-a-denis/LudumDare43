@@ -163,7 +163,8 @@ public class WorldState : MonoBehaviour
 
     public float CurrentHope()
     {
-        return CurrentCrew() / ((float)InitialCrew);
+        return 1f;
+        //return CurrentCrew() / ((float)InitialCrew);
     }
 
     public string CurrentHopeFormatted()
