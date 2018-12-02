@@ -36,7 +36,7 @@ public class WorldState : MonoBehaviour
         // ... add some "relic" rooms. 
         for (int i = 0; i < 3; i++)
         {
-            Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
+            Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 1, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
 
