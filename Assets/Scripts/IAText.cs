@@ -12,30 +12,36 @@ public class IAText
     {
         return
             "As I approach the dangerous system I prepared the crew to protect our cargo. " +
-            "It is so important the crew has been tricked to think we transport ancient relics. This way they will give their lives to protect it. " +
-            "As I carry humans I did bring some fuel for them. I figured they don't run for long without food. " +
-            "Humans also tend to have their mental state degraded when they see other humans die. ";
+            "This cargo is so important the crew has been tricked to think we transport ancient relics. " +
+            "This way they will give their lives to protect it if I order so. " +
+            "As I carry humans I did bring some fuel for them. I figured they don't run for long without food.";
+    }
+
+    public static string Help()
+    {
+        return
+            "Your goal is to keep at least 2 Relics at turn 20. " +
+            "Random events will occur to rooms. Crew in the room will help counter the event. " +
+            "They may die if they could not save the room. " +
+            "In order to raise probability to counter the event, you can choose to sacrifice crew members. " +
+            "Food is consumed (1 per crew member) each turn. If no food is left, crew members will die.";
     }
 
     #endregion Intro
 
     /////////////////////// Resource loss
-    // Drama results can be one of:
-    // - room is saved thanks to crew sacrifice. IA is happy
-    // - room is lost while crew was trying to save it. IA is angry at those stupids humans not even able to save a room.
-    // - room is lost while no crew was affected at its defense. IA is neutral
 
     #region Drama outcome
     public static string CommentOnDramaOutcome(DramaReport report)
     {
-        return CommentOnDramaOutcome(report.HasRoomBeenDestroyed, report.CrewQtyLoss, report.RoomType);
+        return CommentOnDramaOutcome(report.HasRoomBeenDestroyed, report.CrewQtySacrified, report.CrewQtyLoss, report.RoomType);
     }
 
-    public static string CommentOnDramaOutcome(bool roomLost, int nbCrewSacrificed, RoomType roomType)
+    public static string CommentOnDramaOutcome(bool roomLost, int nbSacrificedCrew, int nbDeadCrew, RoomType roomType)
     {
-        Debug.Log("CommentOnDramaOutcome roomLost=" + roomLost + ", nbCrewSacrificed=" + nbCrewSacrificed + ", roomType=" + roomType);
+        Debug.Log("CommentOnDramaOutcome roomLost=" + roomLost + ", nbSacrificedCrew=" + nbSacrificedCrew + ", nbDeadCrew=" + nbDeadCrew + ", roomType=" + roomType);
 
-        if (!roomLost) // Room is saved.
+        if (!roomLost & nbSacrificedCrew > 0) // Room is saved thanks to a sacrifice
         {
             switch (roomType)
             {
@@ -46,18 +52,30 @@ public class IAText
                 case RoomType.RELICS:
                     return RandomComment(new List<string>() {
                         "Perfect!! Relics are saved for the greater good.",
-                        "The Relics are saved. Wisely spent humans!",
-                        "Losing hope and keeping Relics, good move."});
+                        "The Relics are saved. Wisely spent humans!"});
             }
         }
 
-        if (roomLost & nbCrewSacrificed > 0) // We did fail to save the room. 
+        if (!roomLost & nbSacrificedCrew == 0) // Room is saved with no sacrifice
         {
             switch (roomType)
             {
                 case RoomType.FOOD:
                     return RandomComment(new List<string>() {
-                        "Losing food is not the end of the world but humans want some.",
+                        "Keeping food is good for my crew."});
+                case RoomType.RELICS:
+                    return RandomComment(new List<string>() {
+                         "Perfect!! Relics are saved for the greater good."});
+            }
+        }
+
+        if (roomLost & nbDeadCrew > 0) // We did fail to save the room. 
+        {
+            switch (roomType)
+            {
+                case RoomType.FOOD:
+                    return RandomComment(new List<string>() {
+                        "At least we lose humans at the same rate as with lose their fuel.",
                         "Without food my crew will enter a state where they are even more useless.",
                         "I wonder if food is more important than hope for humans... maybe."});
                 case RoomType.RELICS:
@@ -67,7 +85,7 @@ public class IAText
             }
         }
 
-        if (roomLost & nbCrewSacrificed == 0) // We did not even try to save the room.
+        if (roomLost & nbDeadCrew == 0) // We did not even try to save the room.
         {
             switch (roomType)
             {
