@@ -70,7 +70,7 @@ public class WorldState : MonoBehaviour
     private Room CreateRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
     {
         Room newRoom = (Room)Instantiate(roomPrefab) as Room;
-        newRoom.transform.SetParent(canvas.transform, false);
+        newRoom.transform.SetParent(canvas.transform.GetChild(id), false);
 
         newRoom.id = id;
         newRoom.roomName = name;
