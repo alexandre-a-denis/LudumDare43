@@ -41,7 +41,7 @@ public class RoomButton : RoomUIScript, IPointerDownHandler, IPointerUpHandler
 
     void Update()
     {
-        button.interactable = GameManager.manager.CurrentPhase == TurnPhases.DRAMA;
+        button.interactable = GameManager.manager.CurrentPhase == TurnPhases.MOVE;
 
         if (pressed && button.interactable)
         {
