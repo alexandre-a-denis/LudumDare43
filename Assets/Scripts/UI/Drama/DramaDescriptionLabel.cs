@@ -15,12 +15,10 @@ public class DramaDescriptionLabel : MonoBehaviour
    
     void Update()
     {
-        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA && 
-            GameManager.manager.CurrentDrama!=null)
+        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
         {
-            text.text = GameManager.manager.CurrentDrama.ToString();
+            if (GameManager.manager.CurrentDrama != null)
+                text.text = GameManager.manager.CurrentDrama.ToString();
         }
-
-        Debug.Log(GameManager.manager.CurrentPhase+" "+GameManager.manager.CurrentDrama);
     }
 }

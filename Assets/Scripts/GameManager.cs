@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     public bool End = false;
 
 
-
     void Awake()
     {
        worldState = FindObjectOfType<WorldState>();
@@ -122,9 +121,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log(CurrentDrama);
         Debug.Log(CurrentDramaOutcomePrediction);
-
-        // this should only be done after hitting action choice
-       
     }
 
     // ends the drama, starts the move phase
@@ -132,7 +128,6 @@ public class GameManager : MonoBehaviour
     {
         StartMove();
     }
-
 
     // do action
     void DoAction(DramaSolvingOption option)
