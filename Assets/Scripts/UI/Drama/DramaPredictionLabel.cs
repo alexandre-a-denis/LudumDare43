@@ -10,6 +10,7 @@ public class DramaPredictionLabel : MonoBehaviour
     void Start()
     {
         text = GetComponent<Text>();
+        text.text = "";
     }
 
 
@@ -39,10 +40,13 @@ public class DramaPredictionLabel : MonoBehaviour
 
     void SetText(DramaSolvingOption option)
     {
-        float saveCrew = GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseCrew(option);
-        float saveRoom = GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseResources(option);
+        float saveCrew = 1-GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseCrew(option);
+        float saveRoom = 1-GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseResources(option);
 
-        text.text = option+" => Save crew: " + saveCrew + " Save room: " + saveRoom;
+        string saveCrewStr = (int)(100 * saveCrew)+"%";
+        string saveRoomStr = (int)(100 * saveRoom) + "%";
+
+        text.text = "Save crew: " + saveCrewStr + " Save room: " + saveRoomStr;
     }
 
 }
