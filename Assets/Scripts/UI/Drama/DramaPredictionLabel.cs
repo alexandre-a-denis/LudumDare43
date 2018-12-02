@@ -13,40 +13,16 @@ public class DramaPredictionLabel : MonoBehaviour
         text.text = "";
     }
 
-
-    public void OnSaveBothHover()
+    void Update()
     {
         if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
-            SetText(DramaSolvingOption.TryToSaveBoth);
+        {
+            if (GameManager.manager.CurrentDramaOutcomePrediction != null)
+            {
+                float probaToLose = GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseRoom();
+                string probaToLoseStr = (int)(100 * probaToLose) + "%";
+                text.text = "Proba to lose room: " + probaToLoseStr;
+            }
+        }
     }
-
-    public void OnSaveRoomHover()
-    {
-        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
-            SetText(DramaSolvingOption.SaveRoom);
-    }
-
-    public void OnSaveCrewHover()
-    {
-        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
-            SetText(DramaSolvingOption.SaveCrew);
-    }
-
-    public void OnMouseExit()
-    {
-        text.text = "";
-    }
-
-
-    void SetText(DramaSolvingOption option)
-    {
-        float saveCrew = 1-GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseCrew(option);
-        float saveRoom = 1-GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseResources(option);
-
-        string saveCrewStr = (int)(100 * saveCrew)+"%";
-        string saveRoomStr = (int)(100 * saveRoom) + "%";
-
-        text.text = "Save all crew: " + saveCrewStr + " Save room: " + saveRoomStr;
-    }
-
 }
