@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -18,11 +19,15 @@ public class GameManager : MonoBehaviour
     // Number of turns before game ends.
     private int TurnCountLimit = 20;
 
-    // Current turn count.
+    // Current game state
     public int CurrentTurn = 1;
-
     public TurnPhases CurrentPhase = TurnPhases.DRAMA;
 
+    // Global drama
+    public Drama CurrentDrama;
+    public DramaReport CurrentDramaReport;
+    public DramaOutcomePrediction CurrentDramaOutcomePrediction;
+    
     // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
     public bool End = false;
 
@@ -110,21 +115,48 @@ public class GameManager : MonoBehaviour
     {
         CurrentPhase = TurnPhases.DRAMA;
 
-        // disable next button
+        // drama and outcome generation (accessed through ui)
+        CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
+        CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama);
+        Enumerable.Range(0, 100).ToList().ForEach(index => CurrentDramaOutcomePrediction.GenerateSample(worldState.CurrentHope()));
 
-        Drama newDrama = Drama.CreateRandomOne(worldState.GetRooms());
-        Debug.Log(newDrama);
-        DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, worldState.CurrentHope());
-        Debug.Log(newReport);
+        Debug.Log(CurrentDrama);
+        Debug.Log(CurrentDramaOutcomePrediction);
 
         // this should only be done after hitting action choice
-        EndDrama();
+       
     }
 
     // ends the drama, starts the move phase
     void EndDrama()
     {
         StartMove();
+    }
+
+
+    // do action
+    void DoAction(DramaSolvingOption option)
+    {
+        CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction, option);
+        EndDrama();
+    }
+
+    // button triggered
+    public void OnTrySaveBoth()
+    {
+        DoAction(DramaSolvingOption.TryToSaveBoth);
+    }
+
+    // button triggered
+    public void OnSaveRoom()
+    {
+        DoAction(DramaSolvingOption.SaveRoom);
+    }
+
+    // button triggered
+    public void OnSaveCrew()
+    {
+        DoAction(DramaSolvingOption.SaveCrew);
     }
 
     #endregion DRAMA REGION
