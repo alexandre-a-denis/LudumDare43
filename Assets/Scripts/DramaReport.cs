@@ -6,27 +6,27 @@ public class DramaReport
 {
 	private readonly RoomType roomType;
 	private readonly bool hasRoomBeenDestroyed;
-	private readonly int resourceQtyLost;
-	private readonly int crewQtyLost;
+	private readonly int resourceQtyLoss;
+	private readonly int crewQtyLoss;
 
-	public DramaReport(Room room, int resourceQtyLost, int crewQtyLost)
+	public DramaReport(Room room, int resourceQtyLoss, int crewQtyLoss)
 	{
 		this.roomType = room.roomType;
 		this.hasRoomBeenDestroyed = room.roomStatus == RoomStatus.DESTROYED;
-		this.resourceQtyLost = resourceQtyLost;
-		this.crewQtyLost = crewQtyLost;
+		this.resourceQtyLoss = resourceQtyLoss;
+		this.crewQtyLoss = crewQtyLoss;
 	}
 
 	public RoomType RoomType { get {return this.roomType;} }
 	public bool HasRoomBeenDestroyed { get {return this.hasRoomBeenDestroyed;} }
-	public int ResourceQtyLost { get {return this.resourceQtyLost;} }
-	public int CrewQtyLost { get {return this.crewQtyLost;} }	
+	public int ResourceQtyLoss { get {return this.resourceQtyLoss;} }
+	public int CrewQtyLoss { get {return this.crewQtyLoss;} }	
 
 	public override string ToString()
 	{
 		if (this.hasRoomBeenDestroyed)
-			return string.Format("{0} of {1} lost | {2} crew members lost", this.resourceQtyLost, this.roomType, this.crewQtyLost);
+			return string.Format("{0} of {1} lost | {2} crew members lost", this.resourceQtyLoss, this.roomType, this.crewQtyLoss);
 
-		return string.Format("{0} crew members lost", this.crewQtyLost);
+		return string.Format("{0} crew members lost", this.crewQtyLoss);
 	}
 }

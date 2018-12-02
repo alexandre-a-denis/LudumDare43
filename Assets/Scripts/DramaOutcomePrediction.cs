@@ -9,14 +9,16 @@ public class DramaOutcomeSample
 	private readonly int resourceQty;
 	private readonly int crewQty;
 
+	private readonly bool willRoomBeDestroyed;
 	private readonly int resourceQtyLoss;
 	private readonly int crewQtyLoss;
 
-	public DramaOutcomeSample(int resourceQty, int crewQty, int resourceQtyLoss, int crewQtyLoss)
+	public DramaOutcomeSample(int resourceQty, int crewQty, bool willRoomBeDestroyed, int resourceQtyLoss, int crewQtyLoss)
 	{
 		this.resourceQty = resourceQty;
 		this.crewQty = crewQty;
 
+		this.willRoomBeDestroyed = willRoomBeDestroyed;
 		this.resourceQtyLoss = resourceQtyLoss;
 		this.crewQtyLoss = crewQtyLoss;
 	}
@@ -24,6 +26,7 @@ public class DramaOutcomeSample
 	public int ResourceQty { get {return this.resourceQty;} }
 	public int CrewQty { get {return this.crewQty;} }
 
+	public bool WillRoomBeDestroyed { get {return this.willRoomBeDestroyed;} }
 	public int ResourceQtyLoss { get {return this.resourceQtyLoss;} }
 	public int CrewQtyLoss { get {return this.crewQtyLoss;} }	
 }
@@ -45,6 +48,8 @@ public class DramaOutcomePrediction
 		this.drama = drama;
 	}
 
+	public Drama Drama { get {return this.drama;} }
+
 	private void RegisterSample(DramaSolvingOption option, DramaOutcomeSample sample)
 	{
 		this.sampleMap[option].Add(sample);
@@ -54,13 +59,13 @@ public class DramaOutcomePrediction
 
 	private void GenerateSaveRoomSample()
 	{
-		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, 0, this.drama.Room.numberOfCrew);
+		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, false, 0, this.drama.Room.numberOfCrew);
 		RegisterSample(DramaSolvingOption.SaveRoom, newSample);
 	}
 
 	private void GenerateSaveCrewSample()
 	{
-		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, this.drama.Room.resourcesNb, 0);
+		DramaOutcomeSample newSample = new DramaOutcomeSample(this.drama.Room.resourcesNb, this.drama.Room.numberOfCrew, true, this.drama.Room.resourcesNb, 0);
 		RegisterSample(DramaSolvingOption.SaveCrew, newSample);
 	}
 
@@ -73,8 +78,8 @@ public class DramaOutcomePrediction
 		bool willRoomBeDestroyed = Random.Range((float)(System.Math.Sqrt(maybeSurvivorQty) * 0.1f), 1.0f) > (1.0f - currentHope);
 
 		DramaOutcomeSample newSample = willRoomBeDestroyed
-			? new DramaOutcomeSample(resourceQty, crewQty, resourceQty, crewQty)
-			: new DramaOutcomeSample(resourceQty, crewQty, 0, crewQty - maybeSurvivorQty);
+			? new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, resourceQty, crewQty)
+			: new DramaOutcomeSample(resourceQty, crewQty, willRoomBeDestroyed, 0, crewQty - maybeSurvivorQty);
 
 		RegisterSample(DramaSolvingOption.TryToSaveBoth, newSample);
 	}
