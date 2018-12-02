@@ -60,7 +60,7 @@ public class DramaOutcomePrediction
 
 	public DramaOutcomeSample PickOneSample()
 	{
-		return this.samples[Random.Range(0, this.samples[option].Count)];
+		return this.samples[Random.Range(0, this.samples.Count)];
 	}
 
 	public float EvaluateProbabilityToLooseRoom()
