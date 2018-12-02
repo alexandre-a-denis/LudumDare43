@@ -26,13 +26,13 @@ public class WorldState : MonoBehaviour
             DestroyRooms();
 
         // Unique "common" room...
-        commonRoom = CreateRoom(roomId++, "Common room", 50, 0, RoomType.COMMON);
+        commonRoom = CreateRoom(roomId++, "Common room", 100, 0, RoomType.COMMON);
         this.rooms.Add(commonRoom.id, commonRoom);
 
         // ... then some "food" rooms...
         for (int i = 0; i < 3; i++)
         {
-            Room r = CreateRoom(roomId++, string.Format("Cantina #{0}", i + 1), 0, 400, RoomType.FOOD);
+            Room r = CreateRoom(roomId++, string.Format("Cantina #{0}", i + 1), 0, 800, RoomType.FOOD);
             this.rooms.Add(r.id, r);
         }
 
@@ -43,7 +43,7 @@ public class WorldState : MonoBehaviour
             this.rooms.Add(r.id, r);
         }
 
-        int nbCrew = commonRoom.numberOfCrew / 6;
+        int nbCrew = commonRoom.numberOfCrew / rooms.Values.Where(r => r.roomType != RoomType.COMMON).Count();
         foreach (var room in this.rooms)
         {
             if (room.Value.roomType != RoomType.COMMON) { AddCrewToRoom(room.Value, nbCrew); }
@@ -165,12 +165,13 @@ public class WorldState : MonoBehaviour
             List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.roomStatus == RoomStatus.OPERATIONAL && r.resourcesNb > 0).ToList();
             if (rooms.Count == 0)
             {
-                // No more food, let's kill people instead
+                // No more food, let's randomly kill people instead
                 List<Room> roomWithPeople = this.rooms.Values.Where(r => r.roomStatus == RoomStatus.OPERATIONAL && r.numberOfCrew > 0).ToList();
                 if (roomWithPeople.Count == 0)
                 {
                     break;
-                } else
+                }
+                else
                 {
                     roomWithPeople[Random.Range(0, roomWithPeople.Count)].numberOfCrew -= 1;
                 }

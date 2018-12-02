@@ -11,9 +11,10 @@ public class IAText
     public static string Intro()
     {
         return
-            "As I approach the dangerous system I prepared the crew to protect our cargo. " +
+            "Ship AI core:\n" +
+            "As we approach the dangerous system I prepared the crew to protect our cargo. " +
             "This cargo is so important the crew has been tricked to think we transport ancient relics. " +
-            "This way they will give their lives to protect it if I order so. " +
+            "This way they will give their lives to protect it if I order so.\n" +
             "As I carry humans I did bring some fuel for them. I figured they don't run for long without food.";
     }
 

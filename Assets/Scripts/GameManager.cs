@@ -85,30 +85,13 @@ public class GameManager : MonoBehaviour
     {
         // Consume food (1 unit per crew)
         worldState.ConsumeFood(worldState.CurrentCrew());
-        /*
-        if (worldState.CurrentFood() <= 0)
-        {
-            End = true;
-            Debug.Log("No more food, you loose !!!!!!!!!!!!!!");
-            EndGame(false, "No more food, you loose !!!!!!!!!!!!!!");
-            return;
-        }
 
-        // Check if some crew remains
-        if (worldState.CurrentCrew() <= 0)
-        {
-            End = true;
-            Debug.Log("No more crew, you loose !!!!!!!!!!!!");
-            EndGame(false, "No more crew, you loose !!!!!!!!!!!!");
-            return;
-        }
-        */
-
+        // Check for relics (game over)
         if (worldState.CurrentRelics() <1)
         {
             End = true;
-            Debug.Log("2 many Relics lost !!!!!!!!!!!!");
-            EndGame(false, "You did not keep at least 1 Relic !!!!!!!!!!!!");
+            Debug.Log("2 many Relics lost!!");
+            EndGame(false, "You did not keep at least 1 Relic!!");
             return;
         }
 
@@ -121,8 +104,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 End = true;
-                Debug.Log("Reached max turn, you win !!!!!!!!!!!!");
-                EndGame(true, "Reached max turn, you win !!!!!!!!!!!!");
+                Debug.Log("Reached max turn, you win!!");
+                EndGame(true, "Reached max turn, you win!!");
                 return;
             }
         }
