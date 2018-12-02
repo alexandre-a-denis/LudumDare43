@@ -20,7 +20,7 @@ public class DramaOutcomeLabel : MonoBehaviour
         if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA)
             text.text = "";
 
-        if (GameManager.manager.CurrentPhase == TurnPhases.MOVE)
+        if (GameManager.manager.CurrentPhase == TurnPhases.DRAMA_OUTCOME)
             if (GameManager.manager.CurrentDramaReport != null && text.text.Length == 0)
                 text.text = GameManager.manager.CurrentDramaReport.ToString() + "\n" + IAOutcomeDescription();
     }
