@@ -11,8 +11,10 @@ public class WorldState : MonoBehaviour
     public GameObject canvas;
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
     private Room commonRoom;
+    
 
-    void Start()
+    // initializes room
+    public void Init()
     {
         // Create all rooms
         int roomId = 0;
@@ -46,6 +48,7 @@ public class WorldState : MonoBehaviour
             Debug.Log(room);
         }
     }
+
 
     private Room CreateRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
     {

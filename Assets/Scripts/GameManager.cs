@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         // should reset worldState as well
         CurrentTurn = 1;
+        worldState.Init();
         StartDrama();
     }
 
