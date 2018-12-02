@@ -7,19 +7,21 @@ public static class DramaSolver
 {
 	public static DramaReport Apply(DramaOutcomePrediction prediction)
 	{
-		DramaOutcomeSample selectedSample = prediction.PickOneSample();
+		bool willRoomBeDestroyed = Random.Range(0.0f, 1.0f) < prediction.EvaluateTotalProbabilityToSaveRoom();
 
-		if (selectedSample.WillRoomBeDestroyed)
+		int crewQtyLoss = prediction.CrewQtyToSacrifice;
+		int resourceQtyLoss = 0;
+		if (willRoomBeDestroyed)
 		{
-			int survivorsQty = selectedSample.CrewQty - selectedSample.CrewQtyLoss;
-			prediction.Drama.Room.AddCrew(-survivorsQty);
+			crewQtyLoss = prediction.Drama.Room.numberOfCrew;
+			resourceQtyLoss = prediction.Drama.Room.resourcesNb;
 			prediction.Drama.Room.Destroy();
 		}
 		else 
 		{
-			prediction.Drama.Room.KillSome(selectedSample.CrewQtyLoss);	
+			prediction.Drama.Room.KillSome(prediction.CrewQtyToSacrifice);	
 		}
 
-		return new DramaReport(prediction.Drama.Room, selectedSample.ResourceQtyLoss, selectedSample.CrewQtyLoss);
+		return new DramaReport(prediction.Drama.Room, resourceQtyLoss, crewQtyLoss, prediction.CrewQtyToSacrifice);
 	}
 }
