@@ -41,63 +41,79 @@ public class IAText
     {
         Debug.Log("CommentOnDramaOutcome roomLost=" + roomLost + ", nbSacrificedCrew=" + nbSacrificedCrew + ", nbDeadCrew=" + nbDeadCrew + ", roomType=" + roomType);
 
-        if (!roomLost & nbSacrificedCrew > 0) // Room is saved thanks to a sacrifice
+        if (roomLost)
         {
-            switch (roomType)
+            if (nbDeadCrew == 0) // Room destroyed while being unprotected
             {
-                case RoomType.FOOD:
-                    return RandomComment(new List<string>() {
-                        "Keeping food while reducing crew is a good optimisation.",
-                        "Human fuel is saved at a price of some humans."});
-                case RoomType.RELICS:
-                    return RandomComment(new List<string>() {
-                        "Perfect!! Relics are saved for the greater good.",
-                        "The Relics are saved. Wisely spent humans!"});
+                switch (roomType)
+                {
+                    case RoomType.FOOD:
+                        return RandomComment(new List<string>() {
+                        "No one was looking at the food. Oh well..."});
+                    case RoomType.RELICS:
+                        return RandomComment(new List<string>() {
+                        "My precious ones..."});
+                }
             }
-        }
-
-        if (!roomLost & nbSacrificedCrew == 0) // Room is saved with no sacrifice
-        {
-            switch (roomType)
+            else if (nbSacrificedCrew == 0) //Room destroyed while being protected (no sacrifice)
             {
-                case RoomType.FOOD:
-                    return RandomComment(new List<string>() {
-                        "Keeping food is good for my crew."});
-                case RoomType.RELICS:
-                    return RandomComment(new List<string>() {
-                         "Perfect!! Relics are saved for the greater good."});
-            }
-        }
-
-        if (roomLost & nbDeadCrew > 0) // We did fail to save the room. 
-        {
-            switch (roomType)
-            {
-                case RoomType.FOOD:
-                    return RandomComment(new List<string>() {
-                        "At least we lose humans at the same rate as with lose their fuel.",
+                switch (roomType)
+                {
+                    case RoomType.FOOD:
+                        return RandomComment(new List<string>() {
                         "Without food my crew will enter a state where they are even more useless.",
                         "I wonder if food is more important than hope for humans... maybe."});
-                case RoomType.RELICS:
-                    return RandomComment(new List<string>() {
+                    case RoomType.RELICS:
+                        return RandomComment(new List<string>() {
                         "Useless humans! Why should I keep them alive if they can't save the Relics?",
                         "I need something more efficient than this crew."});
+                }
+            }
+            else // Room destroyed while being protected (with sacrifice)
+            {
+                switch (roomType)
+                {
+                    case RoomType.FOOD:
+                        return RandomComment(new List<string>() {
+                        "Without food my crew will enter a state where they are even more useless.",
+                        "I wonder if food is more important than hope for humans... maybe."});
+                    case RoomType.RELICS:
+                        return RandomComment(new List<string>() {
+                        "Useless humans! Why should I keep them alive if they can't save the Relics?",
+                        "Humans are so weak. I should use even more of them."});
+                }
+            }
+        }
+        else
+        {
+            if (nbSacrificedCrew == 0) //Room kept while being protected (no sacrifice)
+            {
+                switch (roomType)
+                {
+                    case RoomType.FOOD:
+                        return RandomComment(new List<string>() {
+                        "Keeping food is good for my crew."});
+                    case RoomType.RELICS:
+                        return RandomComment(new List<string>() {
+                         "Perfect!! Relics are saved for the greater good."});
+                }
+            }
+            else // Room kept while being protected (with sacrifice)
+            {
+                switch (roomType)
+                {
+                    case RoomType.FOOD:
+                        return RandomComment(new List<string>() {
+                        "Keeping food while reducing crew is a good optimisation.",
+                        "Human fuel is saved at a price of some humans."});
+                    case RoomType.RELICS:
+                        return RandomComment(new List<string>() {
+                        "Perfect!! Relics are saved for a minimal cost.",
+                        "The Relics are saved. Wisely spent humans!"});
+                }
             }
         }
 
-        if (roomLost & nbDeadCrew == 0) // We did not even try to save the room.
-        {
-            switch (roomType)
-            {
-                case RoomType.FOOD:
-                    return RandomComment(new List<string>() {
-                        "Keeping them alive to protect really important things."});
-                case RoomType.RELICS:
-                    return RandomComment(new List<string>() {
-                        "This is not good. The project is at risk if the cargo is not delivered.",
-                        "My precious ones..."});
-            }
-        }
 
         return "";
     }
