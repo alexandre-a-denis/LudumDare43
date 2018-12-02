@@ -12,6 +12,9 @@ public class WorldState : MonoBehaviour
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
     private Room commonRoom;
 
+    // ====================== ROOMS ====================== 
+    // Crew are humans used by the IA/player to save rooms. Each crew member adds to the save potential but will die.
+    #region ROOMS
 
     // initializes room
     public void Init()
@@ -36,7 +39,6 @@ public class WorldState : MonoBehaviour
             Room r = CreateRoom(roomId++, string.Format("Relic room #{0}", i + 1), 0, 10, RoomType.RELICS);
             this.rooms.Add(r.id, r);
         }
-        InitialRelics = CurrentRelics();
 
         int nbCrew = commonRoom.numberOfCrew / 6;
         foreach (var room in this.rooms)
@@ -44,8 +46,9 @@ public class WorldState : MonoBehaviour
             if (room.Value.roomType != RoomType.COMMON) { AddCrewToRoom(room.Value, nbCrew); }
             Debug.Log(room);
         }
-    }
 
+        InitialCrew = CurrentCrew();
+    }
 
     private Room CreateRoom(int id, string name, int numberOfCrew, int resourcesNb, RoomType type)
     {
@@ -63,20 +66,22 @@ public class WorldState : MonoBehaviour
         return newRoom;
     }
 
-
     // return rooms as list
     public List<Room> GetRooms()
     {
         return rooms.Values.ToList();
     }
-
+    #endregion ROOMS
 
     // ====================== CREW ====================== 
+    // Crew are humans used by the IA/player to save rooms. Each crew member adds to the save potential but will die.
+    #region CREW
+    private int InitialCrew;
 
     // Get current total number of crew members
     public int CurrentCrew()
     {
-        return this.rooms.Values.Sum(r => r.numberOfCrew);
+        return this.rooms.Values.Where(r => r.roomStatus == RoomStatus.OPERATIONAL).Sum(r => r.numberOfCrew);
     }
 
     // Moves crew between the common room and the other rooms
@@ -122,11 +127,12 @@ public class WorldState : MonoBehaviour
             }
         }
     }
+    #endregion CREW
 
     // ====================== FOOD ====================== 
     // Food is a stock present in the ship at the start of a game. Food is consumed automatically each turn (1 unit per crew).
     // Food is stored into rooms. Loosing a food room removes all food it contained. Food is consumed from food rooms randomly.
-
+    #region FOOD
     // Get current total amount of food
     public int CurrentFood()
     {
@@ -148,26 +154,34 @@ public class WorldState : MonoBehaviour
             amount--;
         }
     }
+    #endregion FOOD
 
     // ====================== HOPE ====================== 
-    // Unlike Food, Hope is not a stock. Hope is calculated based on the number of Relics on the ship relative to the initial number of relics
-
-    public int CurrentRelics()
-    {
-        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS && r.roomStatus == RoomStatus.OPERATIONAL).Sum(r => r.resourcesNb);
-    }
-
-    private int InitialRelics;
+    // For every crew sacrified, the hope level of the remaining humans decrease. We only count the number of death, not if they were able to save
+    // a room or not.
+    #region HOPE
 
     public float CurrentHope()
     {
-        return CurrentRelics() / ((float)InitialRelics);
+        return CurrentCrew() / ((float)InitialCrew);
     }
 
     public string CurrentHopeFormatted()
     {
         return string.Format("{0}%", Mathf.Round(this.CurrentHope() * 100));
     }
+    #endregion HOPE
+
+    // ====================== RELICS ====================== 
+    // Relics are the cargo we transport and hopefully deliver.
+
+    public int CurrentRelics()
+    {
+        return this.rooms.Values.Where(r => r.roomType == RoomType.RELICS && r.roomStatus == RoomStatus.OPERATIONAL).Sum(r => r.resourcesNb);
+    }
+
+
+
 
 
 
