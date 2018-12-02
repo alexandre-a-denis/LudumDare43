@@ -14,17 +14,16 @@ public class IAText
             "Ship AI core:\n" +
             "As we approach the dangerous system I prepared the crew to protect our cargo. " +
             "This cargo is so important the crew has been tricked to think we transport ancient relics. " +
-            "This way they will give their lives to protect it if I order so.\n" +
+            "This way they will give their lives to protect it if I order so." +
             "As I carry humans I did bring some fuel for them. I figured they don't run for long without food.";
     }
 
     public static string Help()
     {
         return
-            "Your goal is to keep at least 1 Relic at turn 20. " +
-            "Random events will occur to rooms. Crew in the room will help counter the event. " +
-            "They may die if they could not save the room. " +
-            "In order to raise probability to counter the event, you can choose to sacrifice crew members. " +
+            "Your goal is to keep at least 1 Relic at turn 20.\n" +
+            "Random events will occur to rooms. Crew in the room will help counter the event. They may die if they could not save the room.\n" +
+            "In order to raise probability to counter the event, you can choose to sacrifice crew members.\n" +
             "Food is consumed (1 per crew member) each turn. If no food is left, crew members will die.";
     }
 
