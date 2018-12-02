@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EndText : MonoBehaviour
+public class IntroText : MonoBehaviour
 {
     Text text;
 

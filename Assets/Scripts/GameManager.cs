@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 
-public enum TurnPhases { DRAMA, DRAMA_OUTCOME, MOVE }
+public enum TurnPhases { INTRO, DRAMA, DRAMA_OUTCOME, MOVE }
 
 // overall GameManager, game init, handles turn structure 
 public class GameManager : MonoBehaviour
@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
     public bool End = false;
 
     // drama panel to handle display
-    EventPanel eventPanel;
+    PanelHandler panelHandler;
     
     void Awake()
     {
         worldState = FindObjectOfType<WorldState>();
-        eventPanel = FindObjectOfType<EventPanel>();
+        panelHandler = FindObjectOfType<PanelHandler>();
     }
 
     void Start()
@@ -45,14 +45,29 @@ public class GameManager : MonoBehaviour
         Init();
     }
 
-    // setup initial state, should also be triggered on Reset
+    // initializes the game
     public void Init()
+    {
+        CurrentPhase = TurnPhases.INTRO;
+        panelHandler.ShowIntroPanel();
+    }
+
+
+    // starts the game, after the intro, triggered by button
+    public void StartGame()
     {
         // should reset worldState as well
         CurrentTurn = 1;
         worldState.Init();
-        StartDrama();
+        StartTurn();
     }
+
+
+    void EndGame(bool won, string cause)
+    {
+        panelHandler.ShowEndPanel(won, cause);
+    }
+
 
     /////////////////////// TURN REGION
     #region TURN REGION
@@ -72,6 +87,8 @@ public class GameManager : MonoBehaviour
         {
             End = true;
             Debug.Log("No more food, you loose !!!!!!!!!!!!!!");
+            EndGame(false, "No more food, you loose !!!!!!!!!!!!!!");
+            return;
         }
 
         // Check if some crew remains
@@ -79,6 +96,8 @@ public class GameManager : MonoBehaviour
         {
             End = true;
             Debug.Log("No more crew, you loose !!!!!!!!!!!!");
+            EndGame(false, "No more crew, you loose !!!!!!!!!!!!");
+            return;
         }
 
         if (!End)
@@ -91,6 +110,8 @@ public class GameManager : MonoBehaviour
             {
                 End = true;
                 Debug.Log("Reached max turn, you win !!!!!!!!!!!!");
+                EndGame(true, "Reached max turn, you win !!!!!!!!!!!!");
+                return;
             }
         }
     }
@@ -100,7 +121,7 @@ public class GameManager : MonoBehaviour
     #region DRAMA REGION
 
     // starts random drama, 
-    void StartDrama()
+    public void StartDrama()
     {
         // drama and outcome generation (accessed through ui)
         CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
@@ -113,7 +134,7 @@ public class GameManager : MonoBehaviour
         }
 
         // only sets phase after all drama stuff has been made
-        eventPanel.ShowChoicePanel();
+        panelHandler.ShowChoicePanel();
         CurrentPhase = TurnPhases.DRAMA;
     }
 
@@ -121,7 +142,7 @@ public class GameManager : MonoBehaviour
     void EndDrama()
     {
         CurrentPhase = TurnPhases.DRAMA_OUTCOME;
-        eventPanel.ShowOutcomePanel();
+        panelHandler.ShowOutcomePanel();
     }
 
     // updates prediction upon slider change
@@ -157,7 +178,7 @@ public class GameManager : MonoBehaviour
     // starts move (triggered by button)
     public void StartMove()
     {
-        eventPanel.ShowMovePanel();
+        panelHandler.ShowMovePanel();
         CurrentPhase = TurnPhases.MOVE;
     }
 
