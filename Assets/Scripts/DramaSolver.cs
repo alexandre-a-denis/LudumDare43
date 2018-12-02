@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public enum DramaSolvingOption
-{
-	SaveRoom,
-	SaveCrew,
-	TryToSaveBoth
-}
-
 public static class DramaSolver
 {
 	public static DramaReport Apply(DramaOutcomePrediction prediction, DramaSolvingOption option)
