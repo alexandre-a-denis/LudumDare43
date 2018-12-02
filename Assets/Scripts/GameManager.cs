@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEngine;
 
 
-public enum TurnPhases { DRAMA, MOVE }
+public enum TurnPhases { DRAMA, DRAMA_OUTCOME, MOVE }
 
 // overall GameManager, game init, handles turn structure 
 public class GameManager : MonoBehaviour
 {
     private static GameManager singleton;
-    public static GameManager manager { get { if (singleton==null) singleton = FindObjectOfType<GameManager>(); return singleton; } }
+    public static GameManager manager { get { if (singleton == null) singleton = FindObjectOfType<GameManager>(); return singleton; } }
 
     private WorldState worldState;
 
@@ -27,23 +27,27 @@ public class GameManager : MonoBehaviour
     public Drama CurrentDrama;
     public DramaReport CurrentDramaReport;
     public DramaOutcomePrediction CurrentDramaOutcomePrediction;
-    
+
     // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
     public bool End = false;
+
+    // drama panel to handle display
+    EventPanel eventPanel;
 
 
     void Awake()
     {
-       worldState = FindObjectOfType<WorldState>();
+        worldState = FindObjectOfType<WorldState>();
+        eventPanel = FindObjectOfType<EventPanel>();
     }
 
-   
+
     void Start()
     {
         Init();
     }
 
-    
+
 
     // setup initial state, should also be triggered on Reset
     public void Init()
@@ -65,7 +69,7 @@ public class GameManager : MonoBehaviour
         StartDrama();
     }
 
-   
+
     // updates resources at the end of turn
     void EndTurn()
     {
@@ -111,17 +115,19 @@ public class GameManager : MonoBehaviour
         // drama and outcome generation (accessed through ui)
         CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
         Debug.Log(CurrentDrama);
-       
+
         // only sets phase after all drama stuff has been made
+        eventPanel.ShowChoicePanel();
         CurrentPhase = TurnPhases.DRAMA;
     }
 
-    // ends the drama, starts the move phase
+    // ends the drama, displays outcome
     void EndDrama()
     {
-        StartMove();
+        CurrentPhase = TurnPhases.DRAMA_OUTCOME;
+        eventPanel.ShowOutcomePanel();
     }
-    
+
 
     // updates prediction upon slider change
     public void UpdatePrediction(int saved)
@@ -131,13 +137,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // Evacuate Now !
+    // Evacuate Now ! (triggered by button)
     public void Evacuate()
     {
         CurrentDramaReport = DramaSolver.Apply(CurrentDramaOutcomePrediction);
         EndDrama();
     }
-    
+
 
     #endregion DRAMA REGION
 
@@ -146,9 +152,10 @@ public class GameManager : MonoBehaviour
     /////////////////////// MOVE REGION
     #region MOVE REGION
 
-    // starts
-    void StartMove()
+    // starts move (triggered by button)
+    public void StartMove()
     {
+        eventPanel.ShowMovePanel();
         CurrentPhase = TurnPhases.MOVE;
     }
 
