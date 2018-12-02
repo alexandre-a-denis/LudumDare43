@@ -19,9 +19,9 @@ public class DramaPredictionLabel : MonoBehaviour
         {
             if (GameManager.manager.CurrentDramaOutcomePrediction != null)
             {
-                float probaToLose = GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseRoom();
-                string probaToLoseStr = (int)(100 * probaToLose) + "%";
-                text.text = "Proba to lose room: " + probaToLoseStr;
+                float probaToSave = 1 - GameManager.manager.CurrentDramaOutcomePrediction.EvaluateProbabilityToLooseRoom();
+                string probaToSaveStr = (int)(100 * probaToSave) + "%";
+                text.text = "Proba to save room: " + probaToSaveStr;
             }
         }
     }

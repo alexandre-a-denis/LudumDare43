@@ -902,10 +902,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -913,7 +913,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Evacuate!
+  m_Text: Sacrifice!
 --- !u!222 &344157288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2908,7 +2908,7 @@ GameObject:
   - component: {fileID: 1806854234}
   - component: {fileID: 1806854233}
   m_Layer: 5
-  m_Name: EvacuateButton
+  m_Name: SacrificeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2930,8 +2930,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 194.1, y: -38.2}
-  m_SizeDelta: {x: 123.3, y: 30}
+  m_AnchoredPosition: {x: 204.2, y: -43.2}
+  m_SizeDelta: {x: 143.4, y: 40.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806854233
 MonoBehaviour:

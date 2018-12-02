@@ -7,7 +7,7 @@ public class DramaSlider : MonoBehaviour
 {
     Text text;
     Slider slider;
-    int oldSavedValue = -1;
+    int oldSacrifiedValue = -1;
 
     // Use this for initialization
     void Start()
@@ -22,13 +22,13 @@ public class DramaSlider : MonoBehaviour
         if (GameManager.manager.CurrentDrama != null)
         {
             Room room = GameManager.manager.CurrentDrama.Room;
-            int saved = (int)(slider.value * room.numberOfCrew);
-            text.text = saved + "/" + room.numberOfCrew + " Crew saved";
+            int sacrified = (int)(slider.value * room.numberOfCrew);
+            text.text = sacrified + "/" + room.numberOfCrew + " Crew sacrified";
 
-            if (saved != oldSavedValue)
+            if (sacrified != oldSacrifiedValue)
             {
-                GameManager.manager.UpdatePrediction(saved);
-                oldSavedValue = saved;
+                GameManager.manager.UpdatePrediction(room.numberOfCrew-sacrified);
+                oldSacrifiedValue = sacrified;
             }
         }
 
