@@ -65,17 +65,17 @@ public class DramaOutcomePrediction
 
 	public float EvaluateProbabilityToLooseRoom()
 	{
-		return this.samples.Count(sample => sample.WillRoomBeDestroyed) / (float)this.samples[option].Count();
+		return this.samples.Count(sample => sample.WillRoomBeDestroyed) / (float)this.samples.Count;
 	}
 
 	public float EvaluateProbabilityToLooseResources()
 	{
-		return this.samples.Count(sample => sample.ResourceQtyLoss > 0) / (float)this.samples[option].Count();
+		return this.samples.Count(sample => sample.ResourceQtyLoss > 0) / (float)this.samples.Count;
 	}
 
 	public float EvaluateProbabilityToLooseCrew()
 	{
-		return this.samples.Count(sample => sample.CrewQtyLoss > 0) / (float)this.samples[option].Count();
+		return this.samples.Count(sample => sample.CrewQtyLoss > 0) / (float)this.samples.Count;
 	}
 
 	public override string ToString()
