@@ -8,10 +8,10 @@ public class IAText
     /////////////////////// Intro
     #region Intro
 
-    public string Intro()
+    public static string Intro()
     {
         return
-            "As I approach ... I prepared the crew to protect our cargo. " +
+            "As I approach the dangerous system I prepared the crew to protect our cargo. " +
             "It is so important the crew has been tricked to think we transport ancient relics. This way they will give their lives to protect it. " +
             "As I carry humans I did bring some fuel for them. I figured they don't run for long without food. " +
             "Humans also tend to have their mental state degraded when they see other humans die. ";
@@ -76,35 +76,12 @@ public class IAText
                         "Keeping them alive to protect really important things."});
                 case RoomType.RELICS:
                     return RandomComment(new List<string>() {
-                        ""});
+                        "This is not good. The project is at risk if the cargo is not delivered.",
+                        "My precious ones..."});
             }
         }
 
         return "";
-    }
-
-    // Deprecated
-    private string OnCrewLoss()
-    {
-        return RandomComment(new List<string>() {
-            "I can afford to manage less crew.",
-            "More humans will be available at destination to refill."});
-    }
-
-    // Deprecated
-    private string OnFoodLoss()
-    {
-        return RandomComment(new List<string>() {
-            "The bio-mass required to fuel humans has no value by itself.",
-            "I may have to adapt the crew to match the food stock." });
-    }
-
-    // Deprecated
-    private string OnRelicLoss()
-    {
-        return RandomComment(new List<string>() {
-            "This is not good. The project is at risk if the cargo is not delivered.",
-            "My precious ones..." });
     }
 
     #endregion Drama outcome
