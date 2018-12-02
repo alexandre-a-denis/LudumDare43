@@ -20,7 +20,7 @@ public class IAText
     public static string Help()
     {
         return
-            "Your goal is to keep at least 2 Relics at turn 20. " +
+            "Your goal is to keep at least 1 Relic at turn 20. " +
             "Random events will occur to rooms. Crew in the room will help counter the event. " +
             "They may die if they could not save the room. " +
             "In order to raise probability to counter the event, you can choose to sacrifice crew members. " +

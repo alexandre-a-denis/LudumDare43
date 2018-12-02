@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     {
         // Consume food (1 unit per crew)
         worldState.ConsumeFood(worldState.CurrentCrew());
+        /*
         if (worldState.CurrentFood() <= 0)
         {
             End = true;
@@ -99,6 +100,15 @@ public class GameManager : MonoBehaviour
             End = true;
             Debug.Log("No more crew, you loose !!!!!!!!!!!!");
             EndGame(false, "No more crew, you loose !!!!!!!!!!!!");
+            return;
+        }
+        */
+
+        if (worldState.CurrentRelics() <1)
+        {
+            End = true;
+            Debug.Log("2 many Relics lost !!!!!!!!!!!!");
+            EndGame(false, "You did not keep at least 1 Relic !!!!!!!!!!!!");
             return;
         }
 

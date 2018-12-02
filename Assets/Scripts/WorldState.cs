@@ -165,9 +165,20 @@ public class WorldState : MonoBehaviour
             List<Room> rooms = this.rooms.Values.Where(r => r.roomType == RoomType.FOOD && r.roomStatus == RoomStatus.OPERATIONAL && r.resourcesNb > 0).ToList();
             if (rooms.Count == 0)
             {
-                break;
+                // No more food, let's kill people instead
+                List<Room> roomWithPeople = this.rooms.Values.Where(r => r.roomStatus == RoomStatus.OPERATIONAL && r.numberOfCrew > 0).ToList();
+                if (roomWithPeople.Count == 0)
+                {
+                    break;
+                } else
+                {
+                    roomWithPeople[Random.Range(0, roomWithPeople.Count)].numberOfCrew -= 1;
+                }
             }
-            rooms[Random.Range(0, rooms.Count)].resourcesNb -= 1;
+            else
+            {
+                rooms[Random.Range(0, rooms.Count)].resourcesNb -= 1;
+            }
             amount--;
         }
     }
