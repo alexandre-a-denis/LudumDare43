@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
     // updates prediction upon slider change
     public void UpdatePrediction(int saved)
     {
-        CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama, saved, worldState.CurrentHope());
+        CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama, saved, worldState.CurrentHope(), worldState.InitialCrew);
         Debug.Log(CurrentDramaOutcomePrediction);
     }
 
