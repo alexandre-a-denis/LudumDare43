@@ -10,20 +10,22 @@ public class IAText
 
     public string Intro()
     {
-        return "As I approach ... I prepared the crew to protect our cargo. " +
+        return
+            "As I approach ... I prepared the crew to protect our cargo. " +
             "It is so important the crew has been tricked to think we transport ancient relics. This way they will give their lives to protect it. " +
-            "As I carry humans I did bring some fuel for them. I figured they don't run for long without food.";
+            "As I carry humans I did bring some fuel for them. I figured they don't run for long without food. " +
+            "Humans also tend to have their mental state degraded when they see other humans die. ";
     }
 
     #endregion Intro
 
     /////////////////////// Resource loss
-    #region Drama outcome
-
     // Drama results can be one of:
     // - room is saved thanks to crew sacrifice. IA is happy
     // - room is lost while crew was trying to save it. IA is angry at those stupids humans not even able to save a room.
     // - room is lost while no crew was affected at its defense. IA is neutral
+
+    #region Drama outcome
     public static string CommentOnDramaOutcome(DramaReport report)
     {
         return CommentOnDramaOutcome(report.HasRoomBeenDestroyed, report.CrewQtyLoss, report.RoomType);
@@ -31,9 +33,10 @@ public class IAText
 
     public static string CommentOnDramaOutcome(bool roomLost, int nbCrewSacrificed, RoomType roomType)
     {
-        if (!roomLost)
+        Debug.Log("CommentOnDramaOutcome roomLost=" + roomLost + ", nbCrewSacrificed=" + nbCrewSacrificed + ", roomType=" + roomType);
+
+        if (!roomLost) // Room is saved.
         {
-            // Room can only be saved if some crew was sacrificed. Let's be happy for the room and not really care for the humans.
             switch (roomType)
             {
                 case RoomType.FOOD:
@@ -43,35 +46,37 @@ public class IAText
                 case RoomType.RELICS:
                     return RandomComment(new List<string>() {
                         "Perfect!! Relics are saved for the greater good.",
-                        "The Relics are saved. The crew was used wisely"});
+                        "The Relics are saved. Wisely spent humans!",
+                        "Losing hope and keeping Relics, good move."});
             }
         }
 
-        if (roomLost & nbCrewSacrificed > 0)
+        if (roomLost & nbCrewSacrificed > 0) // We did fail to save the room. 
         {
-            // We did fail to save the room. 
             switch (roomType)
             {
                 case RoomType.FOOD:
                     return RandomComment(new List<string>() {
-                        "PH <Lost food while trying to defend it>"});
+                        "Losing food is not the end of the world but humans want some.",
+                        "Without food my crew will enter a state where they are even more useless.",
+                        "I wonder if food is more important than hope for humans... maybe."});
                 case RoomType.RELICS:
                     return RandomComment(new List<string>() {
-                        "PH <Lost relics while trying to defend it>"});
+                        "Useless humans! Why should I keep them alive if they can't save the Relics?",
+                        "I need something more efficient than this crew."});
             }
         }
 
-        if (roomLost & nbCrewSacrificed == 0)
+        if (roomLost & nbCrewSacrificed == 0) // We did not even try to save the room.
         {
-            // We did not even try to save the room, the outcome is not a surprise.
             switch (roomType)
             {
                 case RoomType.FOOD:
                     return RandomComment(new List<string>() {
-                        "PH <Lost food while not trying to defend it>"});
+                        "Keeping them alive to protect really important things."});
                 case RoomType.RELICS:
                     return RandomComment(new List<string>() {
-                        "PH <Lost relics while not trying to defend it>"});
+                        ""});
             }
         }
 
