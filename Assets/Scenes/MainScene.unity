@@ -523,7 +523,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 180199173}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1726725585}
+        m_MethodName: OnSaveRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &180199173
@@ -1648,7 +1659,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1224957052}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1726725585}
+        m_MethodName: OnTrySaveBoth
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1224957052
@@ -2009,7 +2031,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1403439867}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1726725585}
+        m_MethodName: OnSaveCrew
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1403439867
@@ -2290,6 +2323,7 @@ GameObject:
   - component: {fileID: 1550091867}
   - component: {fileID: 1550091866}
   - component: {fileID: 1550091865}
+  - component: {fileID: 1550091868}
   m_Layer: 5
   m_Name: NextTurnButton
   m_TagString: Untagged
@@ -2402,6 +2436,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1550091863}
   m_CullTransparentMesh: 0
+--- !u!114 &1550091868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1550091863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88823aa2e2c2a6b4da5af314366eca92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1588737707
 GameObject:
   m_ObjectHideFlags: 0

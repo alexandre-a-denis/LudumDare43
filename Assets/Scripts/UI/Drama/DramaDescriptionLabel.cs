@@ -20,5 +20,7 @@ public class DramaDescriptionLabel : MonoBehaviour
             if (GameManager.manager.CurrentDrama != null)
                 text.text = GameManager.manager.CurrentDrama.ToString();
         }
+
+       // Debug.Log(GameManager.manager.CurrentPhase + " " + GameManager.manager.CurrentDrama);
     }
 }

@@ -44,11 +44,6 @@ public class GameManager : MonoBehaviour
     }
 
     
-    void Update()
-    {
-        // in drama phase, disable next turn, disable
-    }
-
 
     // setup initial state, should also be triggered on Reset
     public void Init()
@@ -112,8 +107,6 @@ public class GameManager : MonoBehaviour
     // starts random drama, 
     void StartDrama()
     {
-        CurrentPhase = TurnPhases.DRAMA;
-
         // drama and outcome generation (accessed through ui)
         CurrentDrama = Drama.CreateRandomOne(worldState.GetRooms());
         CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama);
@@ -121,6 +114,9 @@ public class GameManager : MonoBehaviour
 
         Debug.Log(CurrentDrama);
         Debug.Log(CurrentDramaOutcomePrediction);
+
+        // only sets phase after all drama stuff has been made
+        CurrentPhase = TurnPhases.DRAMA;
     }
 
     // ends the drama, starts the move phase
