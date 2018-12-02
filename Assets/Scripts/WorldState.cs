@@ -26,7 +26,7 @@ public class WorldState : MonoBehaviour
             DestroyRooms();
 
         // Unique "common" room...
-        commonRoom = CreateRoom(roomId++, "Common room", 100, 0, RoomType.COMMON);
+        commonRoom = CreateRoom(roomId++, "Common room", 85, 0, RoomType.COMMON);
         this.rooms.Add(commonRoom.id, commonRoom);
 
         // ... then some "food" rooms...
