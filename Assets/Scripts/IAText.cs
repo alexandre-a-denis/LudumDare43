@@ -8,7 +8,7 @@ public class IAText
     /////////////////////// Intro
     #region Intro
 
-    public string Intro()
+    public static string Intro()
     {
         return
             "As I approach the dangerous system I prepared the crew to protect our cargo. " +
