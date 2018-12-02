@@ -16,12 +16,16 @@ public static class DramaSolver
 	{
 		DramaOutcomeSample selectedSample = prediction.PickOneSample(option);
 
-		int survivorsQty = selectedSample.CrewQty - selectedSample.CrewQtyLoss;
-		prediction.Drama.Room.AddCrew(-survivorsQty);
-		prediction.Drama.Room.KillSome(selectedSample.CrewQty - survivorsQty);
-
 		if (selectedSample.WillRoomBeDestroyed)
+		{
+			int survivorsQty = selectedSample.CrewQty - selectedSample.CrewQtyLoss;
+			prediction.Drama.Room.AddCrew(-survivorsQty);
 			prediction.Drama.Room.Destroy();
+		}
+		else 
+		{
+			prediction.Drama.Room.KillSome(selectedSample.CrewQtyLoss);	
+		}
 
 		return new DramaReport(prediction.Drama.Room, selectedSample.ResourceQtyLoss, selectedSample.CrewQtyLoss);
 	}

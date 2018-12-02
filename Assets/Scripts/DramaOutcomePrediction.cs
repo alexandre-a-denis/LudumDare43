@@ -98,16 +98,12 @@ public class DramaOutcomePrediction
 
 	public float EvaluateProbabilityToLooseResources(DramaSolvingOption option)
 	{
-		int sumResourceQty = this.sampleMap[option].Sum(sample => sample.ResourceQty);
-		int sumResourceQtyLoss = this.sampleMap[option].Sum(sample => sample.ResourceQtyLoss);
-		return (sumResourceQty - sumResourceQtyLoss) / (float)sumResourceQty;
+		return this.sampleMap[option].Count(sample => sample.ResourceQtyLoss > 0) / (float)this.sampleMap[option].Count();
 	}
 
 	public float EvaluateProbabilityToLooseCrew(DramaSolvingOption option)
 	{
-		int sumCrewQty = this.sampleMap[option].Sum(sample => sample.CrewQty);
-		int sumCrewQtyLoss = this.sampleMap[option].Sum(sample => sample.CrewQtyLoss);
-		return (sumCrewQty - sumCrewQtyLoss) / (float)sumCrewQty;
+		return this.sampleMap[option].Count(sample => sample.CrewQtyLoss > 0) / (float)this.sampleMap[option].Count();
 	}
 
 	public override string ToString()
