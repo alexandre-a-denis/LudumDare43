@@ -6,16 +6,16 @@ using System.Text;
 
 public class DramaOutcomePrediction
 {	
-	private const int MAX_INITIAL_CREW = 50;
-
 	private readonly Drama drama;
 	private readonly int crewQtyToSacrifice;
+	private readonly int initalShipCrewQty;
 
-	public DramaOutcomePrediction(Drama drama, int crewQtyToSacrifice, float currentHope)
+	public DramaOutcomePrediction(Drama drama, int crewQtyToSacrifice, float currentHope, int initalShipCrewQty)
 	{
 		// Fuck Hope, we do not need THAT !
 		this.drama = drama;
 		this.crewQtyToSacrifice = crewQtyToSacrifice;
+		this.initalShipCrewQty = initalShipCrewQty;
 	}
 
 	public Drama Drama { get {return this.drama;} }
@@ -26,7 +26,7 @@ public class DramaOutcomePrediction
 	{
 		//sqrt(10 000) = 100
 		int crewQty = this.drama.Room.numberOfCrew;
-		float crewUnitFactor = 10000 / MAX_INITIAL_CREW;
+		float crewUnitFactor = 10000 / this.initalShipCrewQty;
 		return (float)System.Math.Sqrt(crewQty * crewUnitFactor) / 100.0f;
 	}
 
