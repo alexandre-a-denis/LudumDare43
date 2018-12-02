@@ -33,21 +33,17 @@ public class GameManager : MonoBehaviour
 
     // drama panel to handle display
     EventPanel eventPanel;
-
-
+    
     void Awake()
     {
         worldState = FindObjectOfType<WorldState>();
         eventPanel = FindObjectOfType<EventPanel>();
     }
 
-
     void Start()
     {
         Init();
     }
-
-
 
     // setup initial state, should also be triggered on Reset
     public void Init()
@@ -58,8 +54,6 @@ public class GameManager : MonoBehaviour
         StartDrama();
     }
 
-
-
     /////////////////////// TURN REGION
     #region TURN REGION
 
@@ -68,7 +62,6 @@ public class GameManager : MonoBehaviour
     {
         StartDrama();
     }
-
 
     // updates resources at the end of turn
     void EndTurn()
@@ -101,11 +94,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     #endregion TURN REGION
-
-
-
+    
     /////////////////////// DRAMA REGION
     #region DRAMA REGION
 
@@ -128,14 +118,12 @@ public class GameManager : MonoBehaviour
         eventPanel.ShowOutcomePanel();
     }
 
-
     // updates prediction upon slider change
     public void UpdatePrediction(int saved)
     {
         CurrentDramaOutcomePrediction = new DramaOutcomePrediction(CurrentDrama, saved, worldState.CurrentHope());
         Debug.Log(CurrentDramaOutcomePrediction);
     }
-
 
     // Evacuate Now ! (triggered by button)
     public void Evacuate()
@@ -144,10 +132,7 @@ public class GameManager : MonoBehaviour
         EndDrama();
     }
 
-
     #endregion DRAMA REGION
-
-
 
     /////////////////////// MOVE REGION
     #region MOVE REGION
