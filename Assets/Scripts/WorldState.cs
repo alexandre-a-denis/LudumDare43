@@ -22,6 +22,16 @@ public class WorldState : MonoBehaviour
         // Create all rooms
         int roomId = 0;
 
+        if (rooms.Count > 0)
+        {
+            // Remove previous rooms
+            Destroy(commonRoom);
+            commonRoom = null;
+            rooms.Values.ToList().ForEach(r => Destroy(r));
+            rooms = new Dictionary<int, Room>();
+        }
+
+
         // Unique "common" room...
         commonRoom = CreateRoom(roomId++, "Common room", 50, 0, RoomType.COMMON);
         this.rooms.Add(commonRoom.id, commonRoom);
