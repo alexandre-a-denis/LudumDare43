@@ -10,6 +10,6 @@ public class IntroText : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GetComponent<Text>().text = IAText.Intro();
+        GetComponent<Text>().text = IAText.Intro() + "\n\n\n\n\n" + IAText.Help();
     }
 }
