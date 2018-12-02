@@ -26,6 +26,13 @@ public class DramaOutcomeLabel : MonoBehaviour
     }
 
 
+    private void OnEnable()
+    {
+        if (text!=null)
+            text.text = "";
+    }
+
+
     static string IAOutcomeDescription()
     {
         return IAText.CommentOnDramaOutcome(GameManager.manager.CurrentDramaReport);
