@@ -35,6 +35,7 @@ public class DramaSlider : MonoBehaviour
 
     private void OnEnable()
     {
-        slider.value = 0;
+        if (slider!=null)
+            slider.value = 0;
     }
 }
