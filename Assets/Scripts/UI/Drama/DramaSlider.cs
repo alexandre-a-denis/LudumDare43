@@ -35,7 +35,11 @@ public class DramaSlider : MonoBehaviour
 
     private void OnEnable()
     {
-        if (slider!=null)
+        if (slider != null)
+        {
+            if (GameManager.manager.CurrentDrama != null)
+                GameManager.manager.UpdatePrediction(GameManager.manager.CurrentDrama.Room.numberOfCrew);
             slider.value = 0;
+        }
     }
 }
