@@ -11,7 +11,7 @@ public class WorldState : MonoBehaviour
     public GameObject canvas;
     private Dictionary<int, Room> rooms = new Dictionary<int, Room>();
     private Room commonRoom;
-    
+
 
     // initializes room
     public void Init()
@@ -38,13 +38,10 @@ public class WorldState : MonoBehaviour
         }
         InitialRelics = CurrentRelics();
 
+        int nbCrew = commonRoom.numberOfCrew / 6;
         foreach (var room in this.rooms)
         {
-            if (room.Value.roomType != RoomType.COMMON)
-            {
-                int nbCrew = Random.Range(0, commonRoom.numberOfCrew / 2);
-                AddCrewToRoom(room.Value, nbCrew);
-            }
+            if (room.Value.roomType != RoomType.COMMON) { AddCrewToRoom(room.Value, nbCrew); }
             Debug.Log(room);
         }
     }
