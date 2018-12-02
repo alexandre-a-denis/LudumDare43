@@ -46,7 +46,7 @@ public class DramaPredictionLabel : MonoBehaviour
         string saveCrewStr = (int)(100 * saveCrew)+"%";
         string saveRoomStr = (int)(100 * saveRoom) + "%";
 
-        text.text = "Save crew: " + saveCrewStr + " Save room: " + saveRoomStr;
+        text.text = "Save all crew: " + saveCrewStr + " Save room: " + saveRoomStr;
     }
 
 }

@@ -20,14 +20,11 @@ public class IAText
     /////////////////////// Resource loss
     #region Resource Loss
 
-    public static string NoLoss()
+    public static string OnNothingLost()
     {
-        return "NoLoss PH text...........................................";
-    }
-
-    public static string RoomLoss()
-    {
-        return "RoomLoss PH text.........................................";
+        return RandomComment(new List<string>() {
+            "<Nothing happens placeholder 1>",
+            "<Nothing happens placeholder 2>"});
     }
 
     public static string OnCrewLoss()
