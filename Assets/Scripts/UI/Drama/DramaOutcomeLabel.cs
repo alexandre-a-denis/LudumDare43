@@ -18,9 +18,16 @@ public class DramaOutcomeLabel : MonoBehaviour
         if (GameManager.manager.CurrentPhase == TurnPhases.MOVE)
         {
             if (GameManager.manager.CurrentDramaReport != null)
+            { 
                 text.text = GameManager.manager.CurrentDramaReport.ToString();
+            }
         }
+    }
 
-       // Debug.Log(GameManager.manager.CurrentPhase + " " + GameManager.manager.CurrentDrama);
+
+    string IAOutcomeDescription()
+    {
+        DramaReport report = GameManager.manager.CurrentDramaReport;
+        return "";
     }
 }
