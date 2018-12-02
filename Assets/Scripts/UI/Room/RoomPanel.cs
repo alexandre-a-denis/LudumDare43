@@ -64,7 +64,7 @@ public class RoomPanel : RoomUIScript
     {
         while (true)
         {
-           roomBackground.color = Color.Lerp(color, Color.red, Mathf.PingPong(fadeSpeed*Time.time, 1));
+            roomBackground.color = Color.Lerp(color, Color.red, Mathf.PingPong(fadeSpeed*Time.time, 1));
             yield return null;
         }
     }
