@@ -5,9 +5,9 @@ using System.Linq;
 
 public static class DramaSolver
 {
-	public static DramaReport Apply(DramaOutcomePrediction prediction, DramaSolvingOption option)
+	public static DramaReport Apply(DramaOutcomePrediction prediction)
 	{
-		DramaOutcomeSample selectedSample = prediction.PickOneSample(option);
+		DramaOutcomeSample selectedSample = prediction.PickOneSample();
 
 		if (selectedSample.WillRoomBeDestroyed)
 		{
