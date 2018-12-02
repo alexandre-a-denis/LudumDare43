@@ -30,6 +30,6 @@ public class DramaReport
 		if (this.hasRoomBeenDestroyed)
 			return string.Format("{0} of {1} lost | {2} crew members lost ({3} of em has been sacrified)", this.resourceQtyLoss, this.roomType, this.crewQtyLoss, this.crewQtySacrified);
 
-		return string.Format("Room has been saved; but {1} has been sacrified for it", this.crewQtySacrified);
+		return string.Format("Room has been saved; but {0} has been sacrified for it", this.crewQtySacrified);
 	}
 }

@@ -27,7 +27,7 @@ public class DramaSlider : MonoBehaviour
 
             if (sacrified != oldSacrifiedValue)
             {
-                GameManager.manager.UpdatePrediction(room.numberOfCrew-sacrified);
+                GameManager.manager.UpdatePrediction(sacrified);
                 oldSacrifiedValue = sacrified;
             }
         }
@@ -37,9 +37,15 @@ public class DramaSlider : MonoBehaviour
     {
         if (slider != null)
         {
-            if (GameManager.manager.CurrentDrama != null)
-                GameManager.manager.UpdatePrediction(GameManager.manager.CurrentDrama.Room.numberOfCrew);
             slider.value = 0;
+            
+            if (GameManager.manager.CurrentDrama != null)
+            {
+                Room room = GameManager.manager.CurrentDrama.Room;
+                int sacrified = (int)(slider.value * room.numberOfCrew);
+                GameManager.manager.UpdatePrediction(sacrified);
+                oldSacrifiedValue = -1;
+            }
         }
     }
 }

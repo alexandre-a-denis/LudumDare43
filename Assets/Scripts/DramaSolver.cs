@@ -7,7 +7,7 @@ public static class DramaSolver
 {
 	public static DramaReport Apply(DramaOutcomePrediction prediction)
 	{
-		bool willRoomBeDestroyed = Random.Range(0.0f, 1.0f) < prediction.EvaluateTotalProbabilityToSaveRoom();
+		bool willRoomBeDestroyed = Random.Range(0.0f, 1.0f) > prediction.EvaluateTotalProbabilityToSaveRoom();
 
 		int crewQtyLoss = prediction.CrewQtyToSacrifice;
 		int resourceQtyLoss = 0;
