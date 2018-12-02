@@ -60,22 +60,22 @@ public class DramaOutcomePrediction
 
 	public DramaOutcomeSample PickOneSample()
 	{
-		return this.sampleMap[Random.Range(0, this.sampleMap[option].Count)];
+		return this.samples[Random.Range(0, this.samples[option].Count)];
 	}
 
 	public float EvaluateProbabilityToLooseRoom()
 	{
-		return this.sampleMap.Count(sample => sample.WillRoomBeDestroyed) / (float)this.sampleMap[option].Count();
+		return this.samples.Count(sample => sample.WillRoomBeDestroyed) / (float)this.samples[option].Count();
 	}
 
 	public float EvaluateProbabilityToLooseResources()
 	{
-		return this.sampleMap.Count(sample => sample.ResourceQtyLoss > 0) / (float)this.sampleMap[option].Count();
+		return this.samples.Count(sample => sample.ResourceQtyLoss > 0) / (float)this.samples[option].Count();
 	}
 
 	public float EvaluateProbabilityToLooseCrew()
 	{
-		return this.sampleMap.Count(sample => sample.CrewQtyLoss > 0) / (float)this.sampleMap[option].Count();
+		return this.samples.Count(sample => sample.CrewQtyLoss > 0) / (float)this.samples[option].Count();
 	}
 
 	public override string ToString()
