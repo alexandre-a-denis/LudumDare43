@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class GameOverStatus : MonoBehaviour
 {
+
     bool endDisplayed = false;
     WorldState state;
     Text text;
@@ -22,7 +23,7 @@ public class GameOverStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state.End)
+        if (GameManager.manager.End)
         {
             if (!endDisplayed)
             {

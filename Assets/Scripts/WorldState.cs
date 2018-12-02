@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public enum TurnPhases { DRAMA, MOVE }
-
+// 
 public class WorldState : MonoBehaviour
 {
 
@@ -63,6 +62,14 @@ public class WorldState : MonoBehaviour
 
         return newRoom;
     }
+
+
+    // return rooms as list
+    public List<Room> GetRooms()
+    {
+        return rooms.Values.ToList();
+    }
+
 
     // ====================== CREW ====================== 
 
@@ -127,7 +134,7 @@ public class WorldState : MonoBehaviour
     }
 
     // Consume food from rooms
-    private void ConsumeFood(int amount)
+    public void ConsumeFood(int amount)
     {
         while (amount > 0)
         {
@@ -162,62 +169,6 @@ public class WorldState : MonoBehaviour
         return string.Format("{0}%", Mathf.Round(this.CurrentHope() * 100));
     }
 
-    // ====================== TURNS ====================== 
 
-    // Number of turns before game ends.
-    private int TurnCountLimit = 20;
-
-    // Current turn count.
-    public int CurrentTurn = 1;
-
-    public TurnPhases CurrentPhase = TurnPhases.DRAMA;
-
-    // True if game is ended (won or lost). Can happend if turnCount = turnCountLimit or if player looses.
-    public bool End = false;
-
-    public void AfterDrama()
-    {
-        CurrentPhase = TurnPhases.MOVE;
-    }
-
-    public void NextTurn()
-    {
-        CurrentPhase = TurnPhases.DRAMA;
-
-        if (Random.Range(1, 10) < 5)
-        {
-            Drama newDrama = Drama.CreateRandomOne(this.rooms.Values.ToList());
-            Debug.Log(newDrama);
-            DramaReport newReport = DramaSolver.Process(newDrama, DramaSolvingOption.TryToSaveBoth, CurrentHope());
-            Debug.Log(newReport);
-        }
-        // Consume food (1 unit per crew)
-        ConsumeFood(CurrentCrew());
-        if (CurrentFood() <= 0)
-        {
-            End = true;
-            Debug.Log("No more food, you loose !!!!!!!!!!!!!!");
-        }
-
-        // Check if some crew remains
-        if (CurrentCrew() <= 0)
-        {
-            End = true;
-            Debug.Log("No more crew, you loose !!!!!!!!!!!!");
-        }
-
-        if (!End)
-        {
-            // Increase turn count & check for max number of turns
-            CurrentTurn += 1;
-            if (CurrentTurn < TurnCountLimit)
-                Debug.Log("TurnCount increased to " + CurrentTurn);
-            else
-            {
-                End = true;
-                Debug.Log("Reached max turn, you win !!!!!!!!!!!!");
-            }
-        }
-    }
 
 }
